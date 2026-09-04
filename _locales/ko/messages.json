@@ -16,6 +16,11 @@
   "menuRegionTitle": { "message": "영역 선택 캡쳐" },
   "menuRegionDesc": { "message": "드래그로 원하는 부분만" },
 
+  "footerBrand": { "message": "AI코딩하는 기획자 김로린" },
+  "footerInstagram": { "message": "Instagram" },
+  "footerWebsite": { "message": "셀렉트웨이" },
+  "footerEmail": { "message": "Email" },
+
   "ctxRoot": { "message": "스위샷으로 캡쳐" },
   "ctxVisible": { "message": "현재 화면 캡쳐" },
   "ctxFullpage": { "message": "전체 페이지 캡쳐 (스크롤 전체)" },

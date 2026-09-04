@@ -16,6 +16,11 @@
   "menuRegionTitle": { "message": "Capture selected region" },
   "menuRegionDesc": { "message": "Drag to pick just the part you need" },
 
+  "footerBrand": { "message": "Loreen Kim · AI-coding product planner" },
+  "footerInstagram": { "message": "Instagram" },
+  "footerWebsite": { "message": "Selectway" },
+  "footerEmail": { "message": "Email" },
+
   "ctxRoot": { "message": "Capture with SwyShot" },
   "ctxVisible": { "message": "Capture visible area" },
   "ctxFullpage": { "message": "Capture full page (whole scroll)" },

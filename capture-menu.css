@@ -57,3 +57,15 @@ body {
 .swyshot-menu-copy { display: flex; flex-direction: column; gap: 1px; }
 .swyshot-menu-copy strong { font-size: 13px; }
 .swyshot-menu-copy small { font-size: 11px; color: var(--swy-muted); }
+
+.swyshot-footer {
+  margin-top: 8px;
+  padding: 10px 6px 4px;
+  border-top: 1px solid var(--swy-border);
+  text-align: center;
+}
+.swyshot-footer-brand { font-size: 11px; font-weight: 600; color: var(--swy-muted); }
+.swyshot-footer-links { margin-top: 4px; font-size: 10px; color: var(--swy-muted); }
+.swyshot-footer-links a { color: var(--swy-muted); text-decoration: none; }
+.swyshot-footer-links a:hover { color: var(--swy-cobalt); text-decoration: underline; }
+.swyshot-footer-dot { margin: 0 4px; }
