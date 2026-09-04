@@ -6,12 +6,22 @@
   "description": "__MSG_extDescription__",
   "permissions": ["activeTab", "contextMenus", "storage", "downloads", "scripting"],
   "host_permissions": ["<all_urls>"],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
   "background": {
     "service_worker": "background.js"
   },
   "action": {
     "default_title": "__MSG_actionTitle__",
-    "default_popup": "capture-menu.html"
+    "default_popup": "capture-menu.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
   },
   "commands": {
     "capture-visible-tab": {
