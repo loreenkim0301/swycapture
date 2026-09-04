@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "스위샷 (SwyShot)",
+  "version": "1.0.0",
+  "description": "웹페이지를 캡쳐한 즉시 이미지 위에 핀을 찍어 댓글을 붙이고 HTML/PNG/PDF로 저장하는 확장. 현재 화면 / 전체 페이지(스크롤 전체) / 영역 선택 3가지 캡쳐 모드를 지원합니다.",
+  "permissions": ["activeTab", "contextMenus", "storage", "downloads", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "스위샷으로 캡쳐",
+    "default_popup": "capture-menu.html"
+  },
+  "commands": {
+    "capture-visible-tab": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+S",
+        "mac": "Command+Shift+S"
+      },
+      "description": "현재 화면 캡쳐"
+    },
+    "capture-full-page": {
+      "description": "전체 페이지(스크롤 전체) 캡쳐"
+    },
+    "capture-region": {
+      "description": "영역 선택 캡쳐"
+    }
+  }
+}

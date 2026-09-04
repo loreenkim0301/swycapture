@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<link rel="stylesheet" href="capture-menu.css" />
+</head>
+<body>
+  <div class="swyshot-menu">
+    <div class="swyshot-menu-title"><span class="swyshot-dot"></span>스위샷</div>
+
+    <button type="button" class="swyshot-menu-item" data-mode="visible">
+      <span class="swyshot-menu-icon">▭</span>
+      <span class="swyshot-menu-copy">
+        <strong>현재 화면 캡쳐</strong>
+        <small>지금 보이는 화면 그대로</small>
+      </span>
+    </button>
+
+    <button type="button" class="swyshot-menu-item" data-mode="fullpage">
+      <span class="swyshot-menu-icon">⇕</span>
+      <span class="swyshot-menu-copy">
+        <strong>전체 페이지 캡쳐</strong>
+        <small>스크롤 전체를 이어붙여서</small>
+      </span>
+    </button>
+
+    <button type="button" class="swyshot-menu-item" data-mode="region">
+      <span class="swyshot-menu-icon">▧</span>
+      <span class="swyshot-menu-copy">
+        <strong>영역 선택 캡쳐</strong>
+        <small>드래그로 원하는 부분만</small>
+      </span>
+    </button>
+  </div>
+  <script src="capture-menu.js"></script>
+</body>
+</html>

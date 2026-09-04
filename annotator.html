@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>스위샷 — 댓글 달기</title>
+<link rel="stylesheet" href="annotator.css" />
+</head>
+<body>
+  <header class="swyshot-header">
+    <div class="swyshot-brand">
+      <span class="swyshot-dot"></span>
+      <span class="swyshot-title">스위샷 <span class="swyshot-badge">v1.0.0</span></span>
+    </div>
+    <div class="swyshot-hint">핀을 클릭하면 오른쪽 댓글과 연결선으로 표시됩니다. 핀은 드래그해서 위치를 옮길 수 있어요.</div>
+    <div class="swyshot-actions">
+      <span id="swyshot-count" class="swyshot-count">댓글 0개</span>
+      <button id="swyshot-save-html" class="swyshot-btn-secondary">HTML로 저장</button>
+      <button id="swyshot-save-pdf" class="swyshot-btn-secondary">PDF로 저장</button>
+      <button id="swyshot-save-png" class="swyshot-btn-primary">PNG로 저장</button>
+    </div>
+  </header>
+
+  <main class="swyshot-main" id="swyshot-main">
+    <div id="swyshot-canvas" class="swyshot-canvas">
+      <img id="swyshot-image" alt="캡쳐된 화면" />
+      <!-- 핀들이 여기에 동적으로 삽입됩니다 -->
+    </div>
+
+    <aside id="swyshot-sidebar" class="swyshot-sidebar">
+      <div class="swyshot-sidebar-title">댓글 목록</div>
+      <ol id="swyshot-comment-list" class="swyshot-comment-list"></ol>
+      <div id="swyshot-empty" class="swyshot-empty">아직 댓글이 없습니다.<br />이미지를 클릭해 보세요.</div>
+    </aside>
+
+    <svg id="swyshot-connector" class="swyshot-connector"></svg>
+  </main>
+
+  <script src="annotator.js"></script>
+</body>
+</html>

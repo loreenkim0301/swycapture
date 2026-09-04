@@ -1,0 +1,59 @@
+:root {
+  --swy-cobalt: #2B4EE6;
+  --swy-ink: #1c1f26;
+  --swy-border: #e2e4ea;
+  --swy-muted: #6b7280;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  width: 260px;
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  color: var(--swy-ink);
+}
+
+.swyshot-menu { padding: 10px; }
+
+.swyshot-menu-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 4px 6px 10px;
+}
+.swyshot-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--swy-cobalt); display: inline-block; }
+
+.swyshot-menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 8px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+.swyshot-menu-item:hover { background: #eef1fd; }
+
+.swyshot-menu-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: var(--swy-cobalt);
+  color: #fff;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.swyshot-menu-copy { display: flex; flex-direction: column; gap: 1px; }
+.swyshot-menu-copy strong { font-size: 13px; }
+.swyshot-menu-copy small { font-size: 11px; color: var(--swy-muted); }

@@ -1,0 +1,177 @@
+:root {
+  --swy-cobalt: #2B4EE6;
+  --swy-ink: #1c1f26;
+  --swy-bg: #f4f5f7;
+  --swy-panel: #ffffff;
+  --swy-border: #e2e4ea;
+  --swy-muted: #6b7280;
+  --swy-pending: #ff8a2b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  background: var(--swy-bg);
+  color: var(--swy-ink);
+}
+
+.swyshot-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  background: var(--swy-panel);
+  border-bottom: 1px solid var(--swy-border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.swyshot-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+.swyshot-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--swy-cobalt); display: inline-block; }
+.swyshot-badge {
+  font-size: 10px; font-weight: 700; color: var(--swy-cobalt);
+  border: 1px solid var(--swy-cobalt); border-radius: 4px; padding: 1px 5px; margin-left: 4px;
+}
+.swyshot-hint { color: var(--swy-muted); font-size: 13px; flex: 1; }
+.swyshot-actions { display: flex; align-items: center; gap: 12px; }
+.swyshot-count { font-size: 13px; color: var(--swy-muted); }
+
+.swyshot-btn-primary {
+  background: var(--swy-cobalt); color: #fff; border: none;
+  padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px;
+}
+.swyshot-btn-primary:hover { filter: brightness(1.08); }
+.swyshot-btn-primary:disabled { opacity: 0.6; cursor: default; }
+
+.swyshot-btn-secondary {
+  background: #fff; color: var(--swy-cobalt); border: 1px solid var(--swy-cobalt);
+  padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px;
+}
+.swyshot-btn-secondary:hover { background: #eef1fd; }
+.swyshot-btn-secondary:disabled { opacity: 0.6; cursor: default; }
+
+.swyshot-main { display: flex; gap: 16px; padding: 16px; align-items: flex-start; position: relative; }
+
+.swyshot-connector {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 15;
+  overflow: visible;
+}
+.swyshot-connector path {
+  fill: none;
+  stroke: var(--swy-cobalt);
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+  stroke-linecap: round;
+}
+.swyshot-connector circle {
+  fill: var(--swy-cobalt);
+}
+
+.swyshot-canvas {
+  position: relative;
+  display: inline-block;
+  max-width: calc(100% - 300px);
+  background: var(--swy-panel);
+  border: 1px solid var(--swy-border);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+.swyshot-canvas img { display: block; max-width: 100%; height: auto; user-select: none; }
+
+.swyshot-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 11px;
+  background: var(--swy-cobalt);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+  cursor: grab;
+  border: 2px solid #fff;
+  opacity: 0.55;
+  transition: opacity 0.12s ease;
+  touch-action: none;
+  z-index: 16;
+}
+.swyshot-pin:hover,
+.swyshot-pin.active { opacity: 1; }
+.swyshot-pin.pending { background: var(--swy-pending); opacity: 1; cursor: default; }
+.swyshot-pin.active { outline: 3px solid rgba(43,78,230,0.35); }
+.swyshot-pin.dragging { cursor: grabbing; opacity: 1; }
+
+.swyshot-composer {
+  position: absolute;
+  transform: translate(-8px, 12px);
+  background: var(--swy-panel);
+  border: 1px solid var(--swy-border);
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+  padding: 8px;
+  width: 220px;
+  z-index: 30;
+}
+.swyshot-composer textarea {
+  width: 100%; min-height: 60px; resize: vertical;
+  font-size: 13px; padding: 6px; border: 1px solid var(--swy-border); border-radius: 6px;
+  font-family: inherit;
+}
+.swyshot-composer-actions { display: flex; justify-content: flex-end; gap: 6px; margin-top: 6px; }
+.swyshot-composer-actions button {
+  font-size: 12px; padding: 5px 10px; border-radius: 5px; border: 1px solid var(--swy-border);
+  background: #fff; cursor: pointer;
+}
+.swyshot-composer-actions .confirm { background: var(--swy-cobalt); color: #fff; border-color: var(--swy-cobalt); }
+
+.swyshot-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  background: var(--swy-panel);
+  border: 1px solid var(--swy-border);
+  border-radius: 8px;
+  padding: 12px;
+  position: sticky;
+  top: 66px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+.swyshot-sidebar-title { font-weight: 700; font-size: 13px; margin-bottom: 8px; color: var(--swy-muted); }
+.swyshot-comment-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.swyshot-comment-item {
+  border: 1px solid var(--swy-border); border-radius: 6px; padding: 8px;
+  font-size: 13px; cursor: pointer; display: flex; gap: 8px;
+}
+.swyshot-comment-item:hover { border-color: var(--swy-cobalt); }
+.swyshot-comment-item.active { border-color: var(--swy-cobalt); background: #eef1fd; }
+.swyshot-comment-num {
+  flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--swy-cobalt); color: #fff; font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.swyshot-comment-text { white-space: pre-wrap; word-break: break-word; }
+.swyshot-comment-del { margin-left: auto; border: none; background: transparent; color: var(--swy-muted); cursor: pointer; font-size: 12px; }
+.swyshot-comment-del:hover { color: #d33; }
+
+.swyshot-empty { color: var(--swy-muted); font-size: 13px; text-align: center; padding: 20px 0; }
+
+/* ---------- 인쇄(PDF로 저장) ---------- */
+@media print {
+  @page { margin: 12mm; }
+  body { background: #fff; }
+  .swyshot-canvas { page-break-inside: avoid; }
+  .swyshot-comment-item { break-inside: avoid; }
+}
