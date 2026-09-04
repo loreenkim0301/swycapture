@@ -5,16 +5,24 @@
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: "swyshot-root",
-    title: "스위샷으로 캡쳐",
+    title: chrome.i18n.getMessage("ctxRoot"),
     contexts: ["page", "image", "selection"]
   });
-  chrome.contextMenus.create({ id: "swyshot-visible", parentId: "swyshot-root", title: "현재 화면 캡쳐" });
+  chrome.contextMenus.create({
+    id: "swyshot-visible",
+    parentId: "swyshot-root",
+    title: chrome.i18n.getMessage("ctxVisible")
+  });
   chrome.contextMenus.create({
     id: "swyshot-fullpage",
     parentId: "swyshot-root",
-    title: "전체 페이지 캡쳐 (스크롤 전체)"
+    title: chrome.i18n.getMessage("ctxFullpage")
   });
-  chrome.contextMenus.create({ id: "swyshot-region", parentId: "swyshot-root", title: "영역 선택 캡쳐" });
+  chrome.contextMenus.create({
+    id: "swyshot-region",
+    parentId: "swyshot-root",
+    title: chrome.i18n.getMessage("ctxRegion")
+  });
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
@@ -163,7 +171,7 @@ async function captureFullPage(tabId, windowId) {
     const canvasH = Math.round(metrics.scrollHeight * dpr);
 
     if (canvasW > 32000 || canvasH > 32000) {
-      alertInTab(tabId, "페이지가 너무 길어서(또는 넓어서) 전체 캡쳐할 수 없습니다. (스위샷 테스트 버전 제한)");
+      alertInTab(tabId, chrome.i18n.getMessage("errFullPageTooLarge"));
       return;
     }
 
@@ -200,7 +208,7 @@ async function captureFullPage(tabId, windowId) {
     saveAndOpen(dataUrl);
   } catch (err) {
     console.error("[SwyShot] 전체 페이지 캡쳐 실패:", err);
-    alertInTab(tabId, "전체 페이지 캡쳐에 실패했습니다: " + err.message);
+    alertInTab(tabId, chrome.i18n.getMessage("errFullPageFailed", [err.message]));
   }
 }
 
@@ -311,6 +319,6 @@ async function finishRegionCapture(tabId, windowId, rect, dpr) {
     saveAndOpen(croppedDataUrl);
   } catch (err) {
     console.error("[SwyShot] 영역 캡쳐 실패:", err);
-    alertInTab(tabId, "영역 캡쳐에 실패했습니다: " + err.message);
+    alertInTab(tabId, chrome.i18n.getMessage("errRegionFailed", [err.message]));
   }
 }

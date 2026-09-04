@@ -1,5 +1,24 @@
 // [SwyShot] annotator.js
 (function () {
+  function t(key, subs) {
+    return chrome.i18n.getMessage(key, subs) || key;
+  }
+
+  document.title = t("annotatorTitle");
+  document.documentElement.lang = chrome.i18n.getUILanguage();
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-title]").forEach((el) => {
+    el.title = t(el.dataset.i18nTitle);
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    el.placeholder = t(el.dataset.i18nPlaceholder);
+  });
+  document.querySelectorAll("[data-i18n-alt]").forEach((el) => {
+    el.alt = t(el.dataset.i18nAlt);
+  });
+
   const mainEl = document.getElementById("swyshot-main");
   const canvas = document.getElementById("swyshot-canvas");
   const imgEl = document.getElementById("swyshot-image");
@@ -10,23 +29,94 @@
   const savePdfBtn = document.getElementById("swyshot-save-pdf");
   const savePngBtn = document.getElementById("swyshot-save-png");
   const connectorSvg = document.getElementById("swyshot-connector");
+  const authorBtn = document.getElementById("swyshot-author-btn");
+  const authorModal = document.getElementById("swyshot-author-modal");
+  const authorModalTitleEl = document.getElementById("swyshot-author-modal-title");
+  const authorInput = document.getElementById("swyshot-author-input");
+  const authorSkipBtn = document.getElementById("swyshot-author-skip");
+  const authorSaveBtn = document.getElementById("swyshot-author-save");
+  const authorCancelBtn = document.getElementById("swyshot-author-cancel");
 
-  /** @type {{id:string, xPercent:number, yPercent:number, text:string, createdAt:number}[]} */
+  emptyEl.innerHTML = t("emptyState").replace(/\n/g, "<br>");
+
+  /** @type {{id:string, xPercent:number, yPercent:number, text:string, author:string, createdAt:number}[]} */
   let comments = [];
   let capturedAt = Date.now();
   let imageDataUrl = "";
   let pendingPin = null;
   let activeId = null;
+  let authorName = "";
+  let authorNamePrompted = false;
+  let authorModalContext = "edit"; // "first" | "edit"
+  let pendingCommentText = null;
 
-  chrome.storage.local.get(["swyshotImage", "swyshotCapturedAt"], (res) => {
-    if (!res.swyshotImage) {
-      document.body.innerHTML =
-        '<p style="padding:24px;font-family:sans-serif;">캡쳐된 이미지를 찾을 수 없습니다. 다시 캡쳐해주세요.</p>';
-      return;
+  chrome.storage.local.get(
+    ["swyshotImage", "swyshotCapturedAt", "swyshotAuthorName", "swyshotAuthorNamePrompted"],
+    (res) => {
+      if (!res.swyshotImage) {
+        document.body.innerHTML = `<p style="padding:24px;font-family:sans-serif;">${escapeHtml(
+          t("missingImage")
+        )}</p>`;
+        return;
+      }
+      imageDataUrl = res.swyshotImage;
+      capturedAt = res.swyshotCapturedAt || Date.now();
+      imgEl.src = imageDataUrl;
+
+      authorName = res.swyshotAuthorName || "";
+      authorNamePrompted = !!res.swyshotAuthorNamePrompted;
+      updateAuthorBtn();
     }
-    imageDataUrl = res.swyshotImage;
-    capturedAt = res.swyshotCapturedAt || Date.now();
-    imgEl.src = imageDataUrl;
+  );
+
+  // ---------- 댓글 작성자 이름 설정 ----------
+  function updateAuthorBtn() {
+    authorBtn.textContent = authorName ? t("authorBtnWithName", [authorName]) : t("authorBtnDefault");
+    authorBtn.classList.toggle("set", !!authorName);
+  }
+
+  function openAuthorModal(context) {
+    authorModalContext = context || "edit";
+    authorModalTitleEl.textContent = t(
+      authorModalContext === "first" ? "authorModalTitleFirst" : "authorModalTitleEdit"
+    );
+    authorInput.value = authorName;
+    authorCancelBtn.hidden = authorModalContext === "first";
+    authorModal.hidden = false;
+    authorInput.focus();
+  }
+
+  function closeAuthorModal() {
+    authorModal.hidden = true;
+  }
+
+  function finalizeAuthorChoice(name) {
+    authorName = name;
+    authorNamePrompted = true;
+    chrome.storage.local.set({ swyshotAuthorName: authorName, swyshotAuthorNamePrompted: true });
+    updateAuthorBtn();
+    closeAuthorModal();
+
+    if (pendingCommentText) {
+      const { xPercent, yPercent, text } = pendingCommentText;
+      pendingCommentText = null;
+      addComment(xPercent, yPercent, text);
+    }
+  }
+
+  authorBtn.addEventListener("click", () => openAuthorModal("edit"));
+
+  authorCancelBtn.addEventListener("click", () => closeAuthorModal());
+
+  authorModal.addEventListener("click", (e) => {
+    if (e.target === authorModal && authorModalContext !== "first") closeAuthorModal();
+  });
+
+  authorSaveBtn.addEventListener("click", () => finalizeAuthorChoice(authorInput.value.trim()));
+  authorSkipBtn.addEventListener("click", () => finalizeAuthorChoice(""));
+
+  authorInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") authorSaveBtn.click();
   });
 
   // ---------- 새 댓글 찍기 ----------
@@ -55,10 +145,10 @@
     composer.style.left = xPercent + "%";
     composer.style.top = yPercent + "%";
     composer.innerHTML = `
-      <textarea placeholder="댓글을 입력하세요"></textarea>
+      <textarea placeholder="${escapeHtml(t("composerPlaceholder"))}"></textarea>
       <div class="swyshot-composer-actions">
-        <button type="button" class="cancel">취소</button>
-        <button type="button" class="confirm">추가</button>
+        <button type="button" class="cancel">${escapeHtml(t("composerCancel"))}</button>
+        <button type="button" class="confirm">${escapeHtml(t("composerConfirm"))}</button>
       </div>
     `;
     canvas.appendChild(composer);
@@ -86,6 +176,13 @@
       canvas.removeChild(composer);
       pendingPin = null;
       if (!text) return;
+
+      if (comments.length === 0 && !authorNamePrompted) {
+        pendingCommentText = { xPercent, yPercent, text };
+        openAuthorModal("first");
+        return;
+      }
+
       addComment(xPercent, yPercent, text);
     }
   }
@@ -96,6 +193,7 @@
       xPercent,
       yPercent,
       text,
+      author: authorName,
       createdAt: Date.now()
     };
     comments.push(comment);
@@ -127,7 +225,7 @@
       pinEl.style.left = c.xPercent + "%";
       pinEl.style.top = c.yPercent + "%";
       pinEl.textContent = num;
-      pinEl.title = c.text;
+      pinEl.title = (c.author ? c.author + ": " : "") + c.text;
       pinEl.dataset.id = c.id;
       attachDrag(pinEl, c);
       canvas.appendChild(pinEl);
@@ -137,9 +235,13 @@
       li.dataset.id = c.id;
       li.innerHTML = `
         <span class="swyshot-comment-num">${num}</span>
-        <span class="swyshot-comment-text"></span>
-        <button type="button" class="swyshot-comment-del" title="삭제">✕</button>
+        <div class="swyshot-comment-body">
+          <span class="swyshot-comment-author"></span>
+          <span class="swyshot-comment-text"></span>
+        </div>
+        <button type="button" class="swyshot-comment-del" title="${escapeHtml(t("commentDeleteTitle"))}">✕</button>
       `;
+      li.querySelector(".swyshot-comment-author").textContent = c.author || "";
       li.querySelector(".swyshot-comment-text").textContent = c.text;
       li.addEventListener("click", () => activateComment(c.id));
       li.querySelector(".swyshot-comment-del").addEventListener("click", (e) => {
@@ -149,7 +251,7 @@
       listEl.appendChild(li);
     });
 
-    countEl.textContent = `댓글 ${comments.length}개`;
+    countEl.textContent = t("commentCount", [String(comments.length)]);
     emptyEl.style.display = comments.length === 0 ? "block" : "none";
 
     requestAnimationFrame(updateConnector);
@@ -269,7 +371,7 @@
     const url = URL.createObjectURL(blob);
     chrome.downloads.download({ url, filename, saveAs: false }, (downloadId) => {
       if (chrome.runtime.lastError || downloadId === undefined) {
-        const reason = chrome.runtime.lastError ? chrome.runtime.lastError.message : "알 수 없는 오류";
+        const reason = chrome.runtime.lastError ? chrome.runtime.lastError.message : t("unknownError");
         console.error("[SwyShot] 다운로드 실패:", reason);
         showSaveError(reason);
         URL.revokeObjectURL(url);
@@ -284,7 +386,7 @@
           if (onDone) onDone();
         } else if (delta.state && delta.state.current === "interrupted") {
           console.error("[SwyShot] 다운로드 중단:", delta.error && delta.error.current);
-          showSaveError(delta.error ? delta.error.current : "다운로드가 중단됨");
+          showSaveError(delta.error ? delta.error.current : t("downloadInterrupted"));
           URL.revokeObjectURL(url);
           chrome.downloads.onChanged.removeListener(onChanged);
           if (onDone) onDone();
@@ -295,11 +397,7 @@
   }
 
   function showSaveError(reason) {
-    alert(
-      "저장에 실패했습니다.\n원인: " +
-        reason +
-        "\n\nchrome://downloads 에서 실패 사유를 확인하거나, 확장 프로그램을 새로고침(chrome://extensions → 새로고침) 후 다시 시도해주세요."
-    );
+    alert(t("saveErrorAlert", [reason]));
   }
 
   // ---------- PDF로 저장 (브라우저 인쇄 → PDF로 저장, 화면 그대로 노출) ----------
@@ -310,20 +408,19 @@
   // ---------- HTML로 저장 ----------
   saveHtmlBtn.addEventListener("click", () => {
     saveHtmlBtn.disabled = true;
-    saveHtmlBtn.textContent = "저장 중...";
+    saveHtmlBtn.textContent = t("savingLabel");
     const html = buildExportHtml();
     const blob = new Blob([html], { type: "text/html" });
     downloadBlob(blob, buildFilename("html"), () => {
       saveHtmlBtn.disabled = false;
-      saveHtmlBtn.textContent = "HTML로 저장";
+      saveHtmlBtn.textContent = t("saveHtmlBtn");
     });
   });
 
   function buildExportHtml() {
     const selfDescribingData = {
       _format: "swyshot-v1",
-      _instructions:
-        "이 파일은 SwyShot으로 만들어진 자기설명 스크린샷 주석 파일입니다. image는 base64 PNG이고, comments[]의 xPercent/yPercent는 이미지 좌측상단(0,0) 기준 백분율 좌표입니다. 이 JSON만으로 전체 내용을 복원할 수 있습니다.",
+      _instructions: t("exportInstructions"),
       capturedAt,
       exportedAt: Date.now(),
       comments: comments.map((c) => ({
@@ -331,6 +428,7 @@
         xPercent: c.xPercent,
         yPercent: c.yPercent,
         text: c.text,
+        author: c.author || "",
         createdAt: c.createdAt
       }))
     };
@@ -349,10 +447,16 @@
         (c, idx) => `
         <li class="swyshot-vitem" data-id="${escapeHtml(c.id)}">
           <span class="swyshot-vnum">${idx + 1}</span>
-          <span class="swyshot-vtext"></span>
+          <div class="swyshot-vbody">
+            <span class="swyshot-vauthor"></span>
+            <span class="swyshot-vtext"></span>
+          </div>
         </li>`
       )
       .join("");
+
+    const uiLang = chrome.i18n.getUILanguage();
+    const capturedAtStr = new Date(capturedAt).toLocaleString(uiLang);
 
     return `<!DOCTYPE html>
 <!--
@@ -362,10 +466,10 @@
   - 댓글 데이터: <script type="application/json" id="swyshot-comments">에 자기설명 구조로 내장되어 있습니다.
   - 서버/클라우드 업로드 없이 이 파일 하나만으로 이미지+댓글이 모두 보존됩니다.
 -->
-<html lang="ko">
+<html lang="${escapeHtml(uiLang)}">
 <head>
 <meta charset="UTF-8" />
-<title>SwyShot Capture — ${new Date(capturedAt).toLocaleString("ko-KR")}</title>
+<title>${escapeHtml(t("exportPageTitle", [capturedAtStr]))}</title>
 <style>
   * { box-sizing: border-box; }
   body { margin:0; font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif; background:#f4f5f7; padding:24px; }
@@ -391,6 +495,9 @@
   .swyshot-vitem:hover { border-color:#2B4EE6; }
   .swyshot-vitem.active { border-color:#2B4EE6; background:#eef1fd; }
   .swyshot-vnum { flex-shrink:0; width:20px; height:20px; border-radius:50%; background:#2B4EE6; color:#fff; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+  .swyshot-vbody { display:flex; flex-direction:column; min-width:0; flex:1; }
+  .swyshot-vauthor { font-weight:700; font-size:11px; color:#2B4EE6; margin-bottom:2px; }
+  .swyshot-vauthor:empty { display:none; }
   .swyshot-vtext { white-space:pre-wrap; word-break:break-word; }
   .swyshot-connector { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:15; overflow:visible; }
   .swyshot-connector path { fill:none; stroke:#2B4EE6; stroke-width:2; stroke-dasharray:5 4; stroke-linecap:round; }
@@ -398,15 +505,13 @@
 </style>
 </head>
 <body>
-  <div class="swyshot-meta">SwyShot 캡쳐 — ${new Date(capturedAt).toLocaleString("ko-KR")} · 댓글 ${
-      comments.length
-    }개</div>
+  <div class="swyshot-meta">${escapeHtml(t("exportMetaLine", [capturedAtStr, String(comments.length)]))}</div>
   <div class="swyshot-wrap" id="swyshot-wrap">
     <div class="swyshot-frame" id="swyshot-frame">
-      <img id="swyshot-image" src="${imageDataUrl}" alt="캡쳐된 화면" />${pinsHtml}
+      <img id="swyshot-image" src="${imageDataUrl}" alt="${escapeHtml(t("imageAlt"))}" />${pinsHtml}
     </div>
     <aside class="swyshot-sidebar" id="swyshot-sidebar">
-      <div class="swyshot-sidebar-title">댓글 목록</div>
+      <div class="swyshot-sidebar-title">${escapeHtml(t("exportSidebarTitle"))}</div>
       <ol class="swyshot-vlist" id="swyshot-vlist">${listItemsHtml}</ol>
     </aside>
     <svg id="swyshot-connector" class="swyshot-connector"></svg>
@@ -423,7 +528,10 @@
       document.querySelectorAll('.swyshot-vitem').forEach(function(li){
         var id = li.getAttribute('data-id');
         var c = data.comments.find(function(x){ return x.id === id; });
-        if (c) li.querySelector('.swyshot-vtext').textContent = c.text;
+        if (c) {
+          li.querySelector('.swyshot-vauthor').textContent = c.author || '';
+          li.querySelector('.swyshot-vtext').textContent = c.text;
+        }
       });
 
       var wrap = document.getElementById('swyshot-wrap');
@@ -480,19 +588,19 @@
   // ---------- PNG로 저장 (이미지+핀+댓글 목록을 하나의 이미지로 합성) ----------
   savePngBtn.addEventListener("click", () => {
     savePngBtn.disabled = true;
-    savePngBtn.textContent = "저장 중...";
+    savePngBtn.textContent = t("savingLabel");
     buildExportPng()
       .then((blob) => {
         downloadBlob(blob, buildFilename("png"), () => {
           savePngBtn.disabled = false;
-          savePngBtn.textContent = "PNG로 저장";
+          savePngBtn.textContent = t("savePngBtn");
         });
       })
       .catch((err) => {
         console.error("[SwyShot] PNG 생성 실패:", err);
         showSaveError(String(err));
         savePngBtn.disabled = false;
-        savePngBtn.textContent = "PNG로 저장";
+        savePngBtn.textContent = t("savePngBtn");
       });
   });
 
@@ -534,7 +642,7 @@
             const ctx = canvasEl.getContext("2d");
             ctx.drawImage(srcImg, 0, 0, W, H);
             canvasEl.toBlob((blob) => {
-              if (!blob) reject(new Error("캔버스를 이미지로 변환하지 못했습니다."));
+              if (!blob) reject(new Error(t("errCanvasToBlob")));
               else resolve(blob);
             }, "image/png");
             return;
@@ -557,7 +665,9 @@
 
           const rows = comments.map((c, idx) => {
             const lines = wrapTextByChar(mctx, c.text, textMaxWidth);
-            return { num: idx + 1, text: c.text, lines, height: Math.max(badgeSize, lines.length * lineHeight) };
+            const author = c.author || null;
+            const lineCount = lines.length + (author ? 1 : 0);
+            return { num: idx + 1, text: c.text, author, lines, height: Math.max(badgeSize, lineCount * lineHeight) };
           });
 
           let cursorY = padTop + titleFont * 1.4 + 8 * scale;
@@ -603,7 +713,7 @@
           ctx.font = `700 ${titleFont}px -apple-system, "Apple SD Gothic Neo", sans-serif`;
           ctx.textAlign = "left";
           ctx.textBaseline = "alphabetic";
-          ctx.fillText("댓글 목록", sidebarX + padX, padTop + titleFont);
+          ctx.fillText(t("exportSidebarTitle"), sidebarX + padX, padTop + titleFont);
 
           // 계단식 연결선 (핀 → 배지), 배지/핀보다 먼저 그려서 아래 깔리게 함
           const midX = W + gap / 2;
@@ -665,24 +775,33 @@
             ctx.textBaseline = "middle";
             ctx.fillText(String(row.num), badgeCx, badgeCy + 0.5);
 
-            ctx.fillStyle = "#1c1f26";
-            ctx.font = `${bodyFont}px -apple-system, "Apple SD Gothic Neo", sans-serif`;
+            const textX = sidebarX + padX + badgeSize + 8 * scale;
             ctx.textAlign = "left";
             ctx.textBaseline = "alphabetic";
-            row.lines.forEach((line, li) => {
-              ctx.fillText(line, sidebarX + padX + badgeSize + 8 * scale, top + bodyFont + li * lineHeight);
+            let lineIdx = 0;
+            if (row.author) {
+              ctx.fillStyle = "#2B4EE6";
+              ctx.font = `700 ${bodyFont}px -apple-system, "Apple SD Gothic Neo", sans-serif`;
+              ctx.fillText(row.author, textX, top + bodyFont + lineIdx * lineHeight);
+              lineIdx++;
+            }
+            ctx.fillStyle = "#1c1f26";
+            ctx.font = `${bodyFont}px -apple-system, "Apple SD Gothic Neo", sans-serif`;
+            row.lines.forEach((line) => {
+              ctx.fillText(line, textX, top + bodyFont + lineIdx * lineHeight);
+              lineIdx++;
             });
           });
 
           canvasEl.toBlob((blob) => {
-            if (!blob) reject(new Error("캔버스를 이미지로 변환하지 못했습니다."));
+            if (!blob) reject(new Error(t("errCanvasToBlob")));
             else resolve(blob);
           }, "image/png");
         } catch (err) {
           reject(err);
         }
       };
-      srcImg.onerror = () => reject(new Error("이미지를 불러오지 못했습니다."));
+      srcImg.onerror = () => reject(new Error(t("errImageLoad")));
       srcImg.src = imageDataUrl;
     });
   }

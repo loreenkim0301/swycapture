@@ -1,0 +1,93 @@
+{
+  "extName": { "message": "스위샷 (SwyShot)" },
+  "extDescription": {
+    "message": "웹페이지를 캡쳐한 즉시 이미지 위에 핀을 찍어 댓글을 붙이고 HTML/PNG/PDF로 저장하는 확장. 현재 화면 / 전체 페이지(스크롤 전체) / 영역 선택 3가지 캡쳐 모드를 지원합니다."
+  },
+  "actionTitle": { "message": "스위샷으로 캡쳐" },
+  "cmdCaptureVisible": { "message": "현재 화면 캡쳐" },
+  "cmdCaptureFullPage": { "message": "전체 페이지(스크롤 전체) 캡쳐" },
+  "cmdCaptureRegion": { "message": "영역 선택 캡쳐" },
+
+  "menuTitle": { "message": "스위샷" },
+  "menuVisibleTitle": { "message": "현재 화면 캡쳐" },
+  "menuVisibleDesc": { "message": "지금 보이는 화면 그대로" },
+  "menuFullpageTitle": { "message": "전체 페이지 캡쳐" },
+  "menuFullpageDesc": { "message": "스크롤 전체를 이어붙여서" },
+  "menuRegionTitle": { "message": "영역 선택 캡쳐" },
+  "menuRegionDesc": { "message": "드래그로 원하는 부분만" },
+
+  "ctxRoot": { "message": "스위샷으로 캡쳐" },
+  "ctxVisible": { "message": "현재 화면 캡쳐" },
+  "ctxFullpage": { "message": "전체 페이지 캡쳐 (스크롤 전체)" },
+  "ctxRegion": { "message": "영역 선택 캡쳐" },
+
+  "errFullPageTooLarge": {
+    "message": "페이지가 너무 길어서(또는 넓어서) 전체 캡쳐할 수 없습니다. (스위샷 테스트 버전 제한)"
+  },
+  "errFullPageFailed": {
+    "message": "전체 페이지 캡쳐에 실패했습니다: $ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+  "errRegionFailed": {
+    "message": "영역 캡쳐에 실패했습니다: $ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+
+  "annotatorTitle": { "message": "스위샷 — 댓글 달기" },
+  "brandName": { "message": "스위샷" },
+  "headerHint": { "message": "핀을 클릭하면 오른쪽 댓글과 연결선으로 표시됩니다. 핀은 드래그해서 위치를 옮길 수 있어요." },
+  "authorBtnDefault": { "message": "이름 설정" },
+  "authorBtnWithName": {
+    "message": "이름: $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "authorBtnTitle": { "message": "댓글에 표시할 이름 설정" },
+  "commentCount": {
+    "message": "댓글 $COUNT$개",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "saveHtmlBtn": { "message": "HTML로 저장" },
+  "savePdfBtn": { "message": "PDF로 저장" },
+  "savePngBtn": { "message": "PNG로 저장" },
+  "savingLabel": { "message": "저장 중..." },
+
+  "authorModalTitleFirst": { "message": "댓글에 이름을 남길까요?" },
+  "authorModalTitleEdit": { "message": "댓글에 표시할 이름" },
+  "authorInputPlaceholder": { "message": "이름을 입력하세요" },
+  "authorSkipBtn": { "message": "이름 설정 안 함" },
+  "authorSaveBtn": { "message": "이름 저장" },
+  "authorCancelBtn": { "message": "취소" },
+
+  "composerPlaceholder": { "message": "댓글을 입력하세요" },
+  "composerCancel": { "message": "취소" },
+  "composerConfirm": { "message": "추가" },
+
+  "sidebarTitle": { "message": "댓글 목록" },
+  "emptyState": { "message": "아직 댓글이 없습니다.\n이미지를 클릭해 보세요." },
+  "commentDeleteTitle": { "message": "삭제" },
+  "imageAlt": { "message": "캡쳐된 화면" },
+  "missingImage": { "message": "캡쳐된 이미지를 찾을 수 없습니다. 다시 캡쳐해주세요." },
+
+  "saveErrorAlert": {
+    "message": "저장에 실패했습니다.\n원인: $REASON$\n\nchrome://downloads 에서 실패 사유를 확인하거나, 확장 프로그램을 새로고침(chrome://extensions → 새로고침) 후 다시 시도해주세요.",
+    "placeholders": { "reason": { "content": "$1" } }
+  },
+
+  "exportPageTitle": {
+    "message": "SwyShot Capture — $DATE$",
+    "placeholders": { "date": { "content": "$1" } }
+  },
+  "exportMetaLine": {
+    "message": "SwyShot 캡쳐 — $DATE$ · 댓글 $COUNT$개",
+    "placeholders": { "date": { "content": "$1" }, "count": { "content": "$2" } }
+  },
+  "exportSidebarTitle": { "message": "댓글 목록" },
+  "exportInstructions": {
+    "message": "이 파일은 SwyShot으로 만들어진 자기설명 스크린샷 주석 파일입니다. image는 base64 PNG이고, comments[]의 xPercent/yPercent는 이미지 좌측상단(0,0) 기준 백분율 좌표입니다. 이 JSON만으로 전체 내용을 복원할 수 있습니다."
+  },
+
+  "unknownError": { "message": "알 수 없는 오류" },
+  "downloadInterrupted": { "message": "다운로드가 중단됨" },
+  "errCanvasToBlob": { "message": "캔버스를 이미지로 변환하지 못했습니다." },
+  "errImageLoad": { "message": "이미지를 불러오지 못했습니다." }
+}

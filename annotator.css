@@ -53,6 +53,35 @@ body {
 .swyshot-btn-secondary:hover { background: #eef1fd; }
 .swyshot-btn-secondary:disabled { opacity: 0.6; cursor: default; }
 
+.swyshot-author-btn {
+  background: #fff; color: var(--swy-muted); border: 1px solid var(--swy-border);
+  padding: 7px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 12px;
+}
+.swyshot-author-btn:hover { border-color: var(--swy-cobalt); color: var(--swy-cobalt); }
+.swyshot-author-btn.set { color: var(--swy-cobalt); border-color: var(--swy-cobalt); background: #eef1fd; }
+
+.swyshot-modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.35);
+  display: flex; align-items: center; justify-content: center; z-index: 100;
+}
+.swyshot-modal-overlay[hidden] { display: none; }
+.swyshot-modal {
+  background: var(--swy-panel); border-radius: 10px; padding: 20px;
+  width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+.swyshot-modal-title { font-weight: 700; font-size: 14px; margin-bottom: 10px; }
+.swyshot-modal input[type="text"] {
+  width: 100%; font-size: 13px; padding: 8px; border: 1px solid var(--swy-border);
+  border-radius: 6px; font-family: inherit;
+}
+.swyshot-modal-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+.swyshot-modal-actions button { width: 100%; text-align: center; }
+.swyshot-modal-actions #swyshot-author-cancel {
+  border: none; background: transparent; color: var(--swy-muted); padding: 2px; font-size: 12px;
+}
+.swyshot-modal-actions #swyshot-author-cancel:hover { color: var(--swy-ink); }
+.swyshot-modal-actions #swyshot-author-cancel[hidden] { display: none; }
+
 .swyshot-main { display: flex; gap: 16px; padding: 16px; align-items: flex-start; position: relative; }
 
 .swyshot-connector {
@@ -162,6 +191,9 @@ body {
   background: var(--swy-cobalt); color: #fff; font-size: 11px; font-weight: 700;
   display: flex; align-items: center; justify-content: center;
 }
+.swyshot-comment-body { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.swyshot-comment-author { font-weight: 700; font-size: 11px; color: var(--swy-cobalt); margin-bottom: 2px; }
+.swyshot-comment-author:empty { display: none; }
 .swyshot-comment-text { white-space: pre-wrap; word-break: break-word; }
 .swyshot-comment-del { margin-left: auto; border: none; background: transparent; color: var(--swy-muted); cursor: pointer; font-size: 12px; }
 .swyshot-comment-del:hover { color: #d33; }

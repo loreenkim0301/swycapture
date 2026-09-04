@@ -1,0 +1,93 @@
+{
+  "extName": { "message": "SwyShot" },
+  "extDescription": {
+    "message": "Capture a webpage and instantly pin comments on it, then save as HTML/PNG/PDF. Supports 3 capture modes: visible area / full page (whole scroll) / selected region."
+  },
+  "actionTitle": { "message": "Capture with SwyShot" },
+  "cmdCaptureVisible": { "message": "Capture visible area" },
+  "cmdCaptureFullPage": { "message": "Capture full page (whole scroll)" },
+  "cmdCaptureRegion": { "message": "Capture selected region" },
+
+  "menuTitle": { "message": "SwyShot" },
+  "menuVisibleTitle": { "message": "Capture visible area" },
+  "menuVisibleDesc": { "message": "Exactly what's on screen now" },
+  "menuFullpageTitle": { "message": "Capture full page" },
+  "menuFullpageDesc": { "message": "Stitches the entire scroll" },
+  "menuRegionTitle": { "message": "Capture selected region" },
+  "menuRegionDesc": { "message": "Drag to pick just the part you need" },
+
+  "ctxRoot": { "message": "Capture with SwyShot" },
+  "ctxVisible": { "message": "Capture visible area" },
+  "ctxFullpage": { "message": "Capture full page (whole scroll)" },
+  "ctxRegion": { "message": "Capture selected region" },
+
+  "errFullPageTooLarge": {
+    "message": "The page is too long (or too wide) to capture in full. (SwyShot beta limitation)"
+  },
+  "errFullPageFailed": {
+    "message": "Full page capture failed: $ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+  "errRegionFailed": {
+    "message": "Region capture failed: $ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+
+  "annotatorTitle": { "message": "SwyShot — Add comments" },
+  "brandName": { "message": "SwyShot" },
+  "headerHint": { "message": "Click a pin to link it to a comment on the right. Drag a pin to move it." },
+  "authorBtnDefault": { "message": "Set name" },
+  "authorBtnWithName": {
+    "message": "Name: $NAME$",
+    "placeholders": { "name": { "content": "$1" } }
+  },
+  "authorBtnTitle": { "message": "Set the name shown on comments" },
+  "commentCount": {
+    "message": "$COUNT$ comments",
+    "placeholders": { "count": { "content": "$1" } }
+  },
+  "saveHtmlBtn": { "message": "Save as HTML" },
+  "savePdfBtn": { "message": "Save as PDF" },
+  "savePngBtn": { "message": "Save as PNG" },
+  "savingLabel": { "message": "Saving..." },
+
+  "authorModalTitleFirst": { "message": "Add your name to this comment?" },
+  "authorModalTitleEdit": { "message": "Name shown on comments" },
+  "authorInputPlaceholder": { "message": "Enter your name" },
+  "authorSkipBtn": { "message": "Don't set a name" },
+  "authorSaveBtn": { "message": "Save name" },
+  "authorCancelBtn": { "message": "Cancel" },
+
+  "composerPlaceholder": { "message": "Write a comment" },
+  "composerCancel": { "message": "Cancel" },
+  "composerConfirm": { "message": "Add" },
+
+  "sidebarTitle": { "message": "Comments" },
+  "emptyState": { "message": "No comments yet.\nClick the image to add one." },
+  "commentDeleteTitle": { "message": "Delete" },
+  "imageAlt": { "message": "Captured screen" },
+  "missingImage": { "message": "Couldn't find the captured image. Please capture again." },
+
+  "saveErrorAlert": {
+    "message": "Save failed.\nReason: $REASON$\n\nCheck chrome://downloads for the failure reason, or reload the extension (chrome://extensions → reload) and try again.",
+    "placeholders": { "reason": { "content": "$1" } }
+  },
+
+  "exportPageTitle": {
+    "message": "SwyShot Capture — $DATE$",
+    "placeholders": { "date": { "content": "$1" } }
+  },
+  "exportMetaLine": {
+    "message": "SwyShot capture — $DATE$ · $COUNT$ comments",
+    "placeholders": { "date": { "content": "$1" }, "count": { "content": "$2" } }
+  },
+  "exportSidebarTitle": { "message": "Comments" },
+  "exportInstructions": {
+    "message": "This is a self-describing screenshot annotation file made with SwyShot. image is a base64 PNG, and comments[].xPercent/yPercent are percentage coordinates relative to the image's top-left corner (0,0). This JSON alone is enough to reconstruct the full content."
+  },
+
+  "unknownError": { "message": "Unknown error" },
+  "downloadInterrupted": { "message": "Download interrupted" },
+  "errCanvasToBlob": { "message": "Failed to convert the canvas to an image." },
+  "errImageLoad": { "message": "Failed to load the image." }
+}

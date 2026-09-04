@@ -2,34 +2,47 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<title>스위샷 — 댓글 달기</title>
+<title>SwyShot</title>
 <link rel="stylesheet" href="annotator.css" />
 </head>
 <body>
   <header class="swyshot-header">
     <div class="swyshot-brand">
       <span class="swyshot-dot"></span>
-      <span class="swyshot-title">스위샷 <span class="swyshot-badge">v1.0.0</span></span>
+      <span class="swyshot-title"><span data-i18n="brandName"></span> <span class="swyshot-badge">v1.1.0</span></span>
     </div>
-    <div class="swyshot-hint">핀을 클릭하면 오른쪽 댓글과 연결선으로 표시됩니다. 핀은 드래그해서 위치를 옮길 수 있어요.</div>
+    <div class="swyshot-hint" data-i18n="headerHint"></div>
     <div class="swyshot-actions">
-      <span id="swyshot-count" class="swyshot-count">댓글 0개</span>
-      <button id="swyshot-save-html" class="swyshot-btn-secondary">HTML로 저장</button>
-      <button id="swyshot-save-pdf" class="swyshot-btn-secondary">PDF로 저장</button>
-      <button id="swyshot-save-png" class="swyshot-btn-primary">PNG로 저장</button>
+      <button id="swyshot-author-btn" type="button" class="swyshot-author-btn" data-i18n-title="authorBtnTitle"></button>
+      <span id="swyshot-count" class="swyshot-count"></span>
+      <button id="swyshot-save-html" class="swyshot-btn-secondary" data-i18n="saveHtmlBtn"></button>
+      <button id="swyshot-save-pdf" class="swyshot-btn-secondary" data-i18n="savePdfBtn"></button>
+      <button id="swyshot-save-png" class="swyshot-btn-primary" data-i18n="savePngBtn"></button>
     </div>
   </header>
 
+  <div id="swyshot-author-modal" class="swyshot-modal-overlay" hidden>
+    <div class="swyshot-modal">
+      <div id="swyshot-author-modal-title" class="swyshot-modal-title"></div>
+      <input type="text" id="swyshot-author-input" maxlength="30" data-i18n-placeholder="authorInputPlaceholder" />
+      <div class="swyshot-modal-actions">
+        <button type="button" id="swyshot-author-save" class="swyshot-btn-primary" data-i18n="authorSaveBtn"></button>
+        <button type="button" id="swyshot-author-skip" class="swyshot-btn-secondary" data-i18n="authorSkipBtn"></button>
+        <button type="button" id="swyshot-author-cancel" data-i18n="authorCancelBtn"></button>
+      </div>
+    </div>
+  </div>
+
   <main class="swyshot-main" id="swyshot-main">
     <div id="swyshot-canvas" class="swyshot-canvas">
-      <img id="swyshot-image" alt="캡쳐된 화면" />
+      <img id="swyshot-image" data-i18n-alt="imageAlt" />
       <!-- 핀들이 여기에 동적으로 삽입됩니다 -->
     </div>
 
     <aside id="swyshot-sidebar" class="swyshot-sidebar">
-      <div class="swyshot-sidebar-title">댓글 목록</div>
+      <div class="swyshot-sidebar-title" data-i18n="sidebarTitle"></div>
       <ol id="swyshot-comment-list" class="swyshot-comment-list"></ol>
-      <div id="swyshot-empty" class="swyshot-empty">아직 댓글이 없습니다.<br />이미지를 클릭해 보세요.</div>
+      <div id="swyshot-empty" class="swyshot-empty"></div>
     </aside>
 
     <svg id="swyshot-connector" class="swyshot-connector"></svg>
