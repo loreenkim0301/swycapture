@@ -1,0 +1,198 @@
+<title>SwyShot 개인정보처리방침</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Noto+Sans+KR:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+  :root {
+    --bg: #f5f3ee;
+    --surface: #ffffff;
+    --surface-2: #efece4;
+    --border: #e2ddd0;
+    --ink: #211d17;
+    --muted: #6b6459;
+    --muted-2: #a39c8b;
+    --accent: #14B8A6;
+    --accent-2: #22C55E;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14130f; --surface: #1c1a15; --surface-2: #24211a; --border: #343026;
+      --ink: #f1ede3; --muted: #a89f8c; --muted-2: #7c7566;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14130f; --surface: #1c1a15; --surface-2: #24211a; --border: #343026;
+    --ink: #f1ede3; --muted: #a89f8c; --muted-2: #7c7566;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Noto Sans KR", -apple-system, "Apple SD Gothic Neo", sans-serif;
+    padding: 0 24px 100px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    padding: 40px 0 8px;
+  }
+  .brand .mark {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    flex-shrink: 0;
+  }
+  .brand .name {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+    margin: 28px 0 10px;
+  }
+  h1 {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 700;
+    font-size: clamp(28px, 5vw, 36px);
+    line-height: 1.25;
+    margin: 0 0 12px;
+    text-wrap: balance;
+  }
+  .updated {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    color: var(--muted-2);
+    margin-bottom: 40px;
+  }
+
+  h2 {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 700;
+    font-size: 19px;
+    margin: 44px 0 12px;
+  }
+  p, li {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 62ch;
+  }
+  strong { color: var(--ink); font-weight: 700; }
+  ul { padding-left: 20px; margin: 8px 0; }
+  li { margin-bottom: 6px; }
+
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 20px 0;
+  }
+  .callout p { margin: 0; color: var(--ink); font-size: 14.5px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 6px;
+    font-size: 13.5px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--muted-2);
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  td { color: var(--muted); }
+  td b { color: var(--ink); }
+  .tbl-wrap { overflow-x: auto; }
+
+  .contact {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 13.5px;
+    color: var(--muted-2);
+    line-height: 2;
+  }
+  .contact a { color: var(--accent); text-decoration: none; }
+  .contact a:hover { text-decoration: underline; }
+</style>
+
+<div class="wrap">
+  <div class="brand">
+    <span class="mark"></span>
+    <span class="name">SwyShot</span>
+  </div>
+
+  <div class="eyebrow">Privacy Policy</div>
+  <h1>스위샷(SwyShot) 개인정보처리방침</h1>
+  <div class="updated">최종 업데이트 · 2026-09-07 (v1.1.0 기준)</div>
+
+  <div class="callout">
+    <p>
+      결론부터 말씀드리면 — <strong>스위샷은 여러분의 화면 캡쳐 이미지나 댓글을 저장하거나
+      전송하는 서버를 갖고 있지 않습니다.</strong> 모든 데이터는 사용하시는 브라우저 안에만 남습니다.
+    </p>
+  </div>
+
+  <h2>1. 수집하는 정보</h2>
+  <p>
+    스위샷은 별도의 서버를 운영하지 않으며, 사용자의 개인정보를 수집·저장·전송하지 않습니다.
+    캡쳐한 화면 이미지, 댓글 내용, 설정한 이름은 모두 <strong>사용자의 브라우저(Chrome storage)에만
+    저장</strong>되고, 확장 개발자를 포함한 어떤 외부 서버로도 전송되지 않습니다.
+  </p>
+  <p>
+    HTML로 저장하기를 실행하면 이미지와 댓글이 담긴 파일 하나가 사용자의 컴퓨터에 다운로드될 뿐이며,
+    이 과정에서도 외부 업로드는 발생하지 않습니다.
+  </p>
+
+  <h2>2. 요청하는 권한과 이유</h2>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>권한</th><th>사용 목적</th></tr>
+      <tr><td><b>activeTab</b></td><td>사용자가 아이콘을 클릭하거나 단축키를 눌렀을 때, 현재 탭의 화면을 캡쳐하기 위해 사용합니다.</td></tr>
+      <tr><td><b>scripting</b></td><td>전체 페이지 캡쳐 시 스크롤 위치를 옮기고, 영역 선택 캡쳐 시 선택 오버레이를 페이지에 표시하기 위해 사용합니다.</td></tr>
+      <tr><td><b>storage</b></td><td>캡쳐한 이미지·댓글·설정한 이름을 브라우저 로컬 저장소에 임시 보관하기 위해 사용합니다.</td></tr>
+      <tr><td><b>downloads</b></td><td>사용자가 "HTML/PNG로 저장" 버튼을 눌렀을 때 결과 파일을 컴퓨터에 내려받기 위해 사용합니다.</td></tr>
+      <tr><td><b>host_permissions (모든 사이트)</b></td><td>어떤 웹페이지에서도 캡쳐 기능을 사용할 수 있도록 하기 위해 필요합니다. 페이지 내용을 읽거나 서버로 전송하지 않습니다.</td></tr>
+      <tr><td><b>contextMenus</b></td><td>우클릭 메뉴에 "스위샷으로 캡쳐" 항목을 추가하기 위해 사용합니다.</td></tr>
+    </table>
+  </div>
+
+  <h2>3. 제3자 제공 및 광고</h2>
+  <p>
+    스위샷은 어떤 형태의 사용자 데이터도 제3자에게 제공, 판매, 공유하지 않습니다.
+    광고 SDK, 분석 도구(애널리틱스), 트래킹 스크립트를 포함하지 않습니다.
+  </p>
+
+  <h2>4. 데이터 보관 및 삭제</h2>
+  <p>
+    캡쳐 이미지와 댓글은 새로운 캡쳐를 시작하면 이전 데이터가 교체되며, 설정한 이름은 확장을
+    삭제하거나 <code>chrome://extensions</code>에서 데이터를 지울 때까지 브라우저에 남습니다.
+    직접 삭제를 원하시면 확장 프로그램을 제거하는 것으로 모든 저장 데이터가 함께 삭제됩니다.
+  </p>
+
+  <h2>5. 정책 변경</h2>
+  <p>
+    이 방침이 변경되는 경우 이 페이지에 최신 내용을 반영하고 상단의 최종 업데이트 날짜를 갱신합니다.
+  </p>
+
+  <div class="contact">
+    <div>문의 · loreen@selectway.co.kr</div>
+    <div>제작 · 셀렉트웨이(Selectway) · <a href="https://www.swy.kr/swyshot/">swy.kr/swyshot</a></div>
+  </div>
+</div>
