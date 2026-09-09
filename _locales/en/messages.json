@@ -1,5 +1,5 @@
 {
-  "extName": { "message": "SwyShot" },
+  "extName": { "message": "SwyShot (스위샷) - Free Screenshot Capture & Comments" },
   "extDescription": {
     "message": "Capture a webpage and instantly pin comments on it, then save as HTML/PNG/PDF. Supports 3 capture modes: visible area / full page (whole scroll) / selected region."
   },

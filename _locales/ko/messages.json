@@ -1,5 +1,5 @@
 {
-  "extName": { "message": "스위샷 (SwyShot)" },
+  "extName": { "message": "스위샷 (SwyShot) - 무료 스크린샷 캡쳐와 댓글 기능" },
   "extDescription": {
     "message": "웹페이지를 캡쳐한 즉시 이미지 위에 핀을 찍어 댓글을 붙이고 HTML/PNG/PDF로 저장하는 확장. 현재 화면 / 전체 페이지(스크롤 전체) / 영역 선택 3가지 캡쳐 모드를 지원합니다."
   },

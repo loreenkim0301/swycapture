@@ -1,7 +1,8 @@
 # 크롬 웹 스토어 등록 텍스트 (v1.1.0)
 
 ## 이름
-스위샷 (SwyShot)
+- 한국어: 스위샷 (SwyShot) - 무료 스크린샷 캡쳐와 댓글 기능
+- English: SwyShot (스위샷) - Free Screenshot Capture & Comments
 
 ## 요약 (Summary, 132자 이내)
 웹페이지를 캡쳐한 즉시 이미지 위에 핀을 찍어 댓글을 달고 HTML/PNG/PDF로 저장하는 확장. 현재 화면·전체 페이지·영역 선택 3가지 캡쳐 모드를 지원합니다.
