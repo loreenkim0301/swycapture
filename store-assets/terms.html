@@ -33,9 +33,10 @@
   .wrap { max-width: 720px; margin: 0 auto; }
 
   .brand {
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
     padding: 40px 0 8px;
   }
+  .brand-left { display: flex; align-items: center; gap: 10px; }
   .brand .mark {
     width: 30px; height: 30px; border-radius: 8px;
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
@@ -46,6 +47,23 @@
     font-weight: 700;
     font-size: 16px;
   }
+
+  .lang-switch {
+    display: flex; gap: 2px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3px;
+  }
+  .lang-switch button {
+    border: none; background: transparent; cursor: pointer;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px; font-weight: 500;
+    color: var(--muted-2);
+    padding: 5px 11px;
+    border-radius: 16px;
+  }
+  .lang-switch button.active { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
 
   .eyebrow {
     font-family: "IBM Plex Mono", monospace;
@@ -110,86 +128,180 @@
 
 <div class="wrap">
   <div class="brand">
-    <span class="mark"></span>
-    <span class="name">SwyShot</span>
+    <div class="brand-left">
+      <span class="mark"></span>
+      <span class="name">SwyShot</span>
+    </div>
+    <div class="lang-switch">
+      <button type="button" data-lang="ko">한국어</button>
+      <button type="button" data-lang="en">EN</button>
+    </div>
   </div>
 
   <div class="eyebrow">Terms of Service</div>
-  <h1>스위샷(SwyShot) 이용약관</h1>
-  <div class="updated">최종 업데이트 · 2026-09-09 (v1.1.0 기준)</div>
+  <h1 data-i18n="h1">스위샷(SwyShot) 이용약관</h1>
+  <div class="updated" data-i18n="updated">최종 업데이트 · 2026-09-09 (v1.1.0 기준)</div>
 
   <div class="callout">
-    <p>
+    <p data-i18n="callout">
       스위샷은 <strong>무료</strong>로 제공되는 크롬 확장 프로그램이며, 별도의 회원가입이나
       로그인 없이 설치 즉시 사용할 수 있습니다.
     </p>
   </div>
 
-  <h2>1. 서비스 소개</h2>
-  <p>
+  <h2 data-i18n="h2_1">1. 서비스 소개</h2>
+  <p data-i18n="p1">
     스위샷(SwyShot)은 웹페이지를 캡쳐하고, 캡쳐한 이미지 위에 핀을 찍어 댓글을 남긴 뒤
     HTML·PNG·PDF로 저장할 수 있게 해주는 크롬 확장 프로그램입니다("서비스"). 이 약관은 셀렉트웨이(이하 "회사")가
     제공하는 스위샷을 이용함에 있어 회사와 이용자의 권리·의무 및 책임사항을 정합니다.
   </p>
 
-  <h2>2. 이용 계약의 성립</h2>
-  <p>
+  <h2 data-i18n="h2_2">2. 이용 계약의 성립</h2>
+  <p data-i18n="p2">
     이용자가 크롬 웹 스토어를 통해 스위샷을 설치하는 시점에 본 약관에 동의한 것으로 간주합니다.
     스위샷은 별도의 회원가입 절차 없이 제공되며, 설치·삭제는 이용자가 자유롭게 결정할 수 있습니다.
   </p>
 
-  <h2>3. 서비스의 내용 및 제공</h2>
+  <h2 data-i18n="h2_3">3. 서비스의 내용 및 제공</h2>
   <ul>
-    <li>스위샷은 무료로 제공되며, 현재는 광고나 유료 결제 요소를 포함하지 않습니다.</li>
-    <li>회사는 기능 개선, 오류 수정 등을 위해 서비스 내용을 수시로 변경할 수 있습니다.</li>
-    <li>회사는 운영상·기술상 필요에 따라 서비스의 전부 또는 일부를 예고 없이 중단할 수 있습니다.</li>
+    <li data-i18n="l3a">스위샷은 무료로 제공되며, 현재는 광고나 유료 결제 요소를 포함하지 않습니다.</li>
+    <li data-i18n="l3b">회사는 기능 개선, 오류 수정 등을 위해 서비스 내용을 수시로 변경할 수 있습니다.</li>
+    <li data-i18n="l3c">회사는 운영상·기술상 필요에 따라 서비스의 전부 또는 일부를 예고 없이 중단할 수 있습니다.</li>
   </ul>
 
-  <h2>4. 이용자의 의무</h2>
-  <p>이용자는 스위샷을 이용함에 있어 다음 행위를 해서는 안 됩니다.</p>
+  <h2 data-i18n="h2_4">4. 이용자의 의무</h2>
+  <p data-i18n="p4a">이용자는 스위샷을 이용함에 있어 다음 행위를 해서는 안 됩니다.</p>
   <ul>
-    <li>타인의 저작물, 개인정보, 초상권 등을 침해하는 목적으로 캡쳐·댓글 기능을 사용하는 행위</li>
-    <li>스위샷의 소스코드를 역컴파일·리버스 엔지니어링하거나 무단으로 재배포하는 행위</li>
-    <li>서비스의 정상적인 운영을 방해하는 행위</li>
+    <li data-i18n="l4a">타인의 저작물, 개인정보, 초상권 등을 침해하는 목적으로 캡쳐·댓글 기능을 사용하는 행위</li>
+    <li data-i18n="l4b">스위샷의 소스코드를 역컴파일·리버스 엔지니어링하거나 무단으로 재배포하는 행위</li>
+    <li data-i18n="l4c">서비스의 정상적인 운영을 방해하는 행위</li>
   </ul>
-  <p>
+  <p data-i18n="p4b">
     캡쳐한 이미지와 댓글 내용에 대한 책임은 이를 생성한 이용자 본인에게 있으며, 회사는 이용자가
     생성한 콘텐츠의 내용에 대해 사전에 검수하거나 개입하지 않습니다.
   </p>
 
-  <h2>5. 지적재산권</h2>
-  <p>
+  <h2 data-i18n="h2_5">5. 지적재산권</h2>
+  <p data-i18n="p5">
     스위샷의 소스코드, 디자인, 로고 등에 대한 저작권은 회사에 있습니다. 이용자가 스위샷으로
     생성한 캡쳐 이미지·댓글·저장 파일의 저작권은 해당 콘텐츠를 만든 이용자에게 있으며,
     회사는 이를 수집하거나 이용하지 않습니다.
   </p>
 
-  <h2>6. 면책조항</h2>
-  <p>
+  <h2 data-i18n="h2_6">6. 면책조항</h2>
+  <p data-i18n="p6a">
     스위샷은 <strong>현재 상태 그대로("AS-IS")</strong> 제공되며, 회사는 서비스의 완전성·정확성·안정성을
     보증하지 않습니다. 회사는 다음의 경우에 대해 책임을 지지 않습니다.
   </p>
   <ul>
-    <li>천재지변, 브라우저·운영체제 업데이트 등 회사가 통제할 수 없는 사유로 인한 서비스 장애</li>
-    <li>이용자가 캡쳐·저장한 콘텐츠의 손실, 또는 이용자가 직접 생성한 콘텐츠로 인해 발생한 분쟁</li>
-    <li>이용자의 귀책 사유로 인한 서비스 이용 장애</li>
+    <li data-i18n="l6a">천재지변, 브라우저·운영체제 업데이트 등 회사가 통제할 수 없는 사유로 인한 서비스 장애</li>
+    <li data-i18n="l6b">이용자가 캡쳐·저장한 콘텐츠의 손실, 또는 이용자가 직접 생성한 콘텐츠로 인해 발생한 분쟁</li>
+    <li data-i18n="l6c">이용자의 귀책 사유로 인한 서비스 이용 장애</li>
   </ul>
 
-  <h2>7. 약관의 변경</h2>
-  <p>
+  <h2 data-i18n="h2_7">7. 약관의 변경</h2>
+  <p data-i18n="p7">
     회사는 필요한 경우 본 약관을 변경할 수 있으며, 변경 시 이 페이지에 개정 내용과 시행일을
     공지합니다. 변경된 약관은 공지 후 계속 서비스를 이용하는 경우 동의한 것으로 간주합니다.
   </p>
 
-  <h2>8. 준거법 및 관할</h2>
-  <p>
+  <h2 data-i18n="h2_8">8. 준거법 및 관할</h2>
+  <p data-i18n="p8">
     본 약관은 대한민국 법령에 따라 해석되며, 서비스 이용과 관련하여 분쟁이 발생할 경우
     민사소송법상의 관할 법원에 제기합니다.
   </p>
 
   <div class="contact">
-    <div>문의 · loreen@selectway.co.kr</div>
-    <div>관련 문서 · <a href="https://claude.ai/code/artifact/888968ed-5eee-40e4-bf60-c575152db96f">개인정보처리방침</a></div>
-    <div>제작 · 셀렉트웨이(Selectway) · <a href="https://www.swy.kr/swyshot/">swy.kr/swyshot</a></div>
+    <div><span data-i18n="contactLabel">문의</span> · loreen@selectway.co.kr</div>
+    <div><span data-i18n="relatedLabel">관련 문서</span> · <a href="https://claude.ai/code/artifact/888968ed-5eee-40e4-bf60-c575152db96f" data-i18n="privacyLink">개인정보처리방침</a></div>
+    <div><span data-i18n="madeByLabel">제작</span> · 셀렉트웨이(Selectway) · <a href="https://www.swy.kr/swyshot/">swy.kr/swyshot</a></div>
   </div>
 </div>
+
+<script>
+  var MESSAGES = {
+    h1: { ko: "스위샷(SwyShot) 이용약관", en: "SwyShot Terms of Service" },
+    updated: { ko: "최종 업데이트 · 2026-09-09 (v1.1.0 기준)", en: "Last updated · 2026-09-09 (v1.1.0)" },
+    callout: {
+      ko: "스위샷은 <strong>무료</strong>로 제공되는 크롬 확장 프로그램이며, 별도의 회원가입이나 로그인 없이 설치 즉시 사용할 수 있습니다.",
+      en: "SwyShot is a <strong>free</strong> Chrome extension you can use immediately after installing — no sign-up or login required."
+    },
+    h2_1: { ko: "1. 서비스 소개", en: "1. About the service" },
+    p1: {
+      ko: '스위샷(SwyShot)은 웹페이지를 캡쳐하고, 캡쳐한 이미지 위에 핀을 찍어 댓글을 남긴 뒤 HTML·PNG·PDF로 저장할 수 있게 해주는 크롬 확장 프로그램입니다("서비스"). 이 약관은 셀렉트웨이(이하 "회사")가 제공하는 스위샷을 이용함에 있어 회사와 이용자의 권리·의무 및 책임사항을 정합니다.',
+      en: 'SwyShot ("the Service") is a Chrome extension that lets you capture webpages, drop numbered pins with comments on the captured image, and save it as HTML, PNG, or PDF. These Terms set out the rights, obligations, and responsibilities between Selectway ("the Company") and users of SwyShot.'
+    },
+    h2_2: { ko: "2. 이용 계약의 성립", en: "2. Formation of the agreement" },
+    p2: {
+      ko: "이용자가 크롬 웹 스토어를 통해 스위샷을 설치하는 시점에 본 약관에 동의한 것으로 간주합니다. 스위샷은 별도의 회원가입 절차 없이 제공되며, 설치·삭제는 이용자가 자유롭게 결정할 수 있습니다.",
+      en: "By installing SwyShot from the Chrome Web Store, you are considered to have agreed to these Terms. SwyShot requires no sign-up process, and you may install or remove it freely at any time."
+    },
+    h2_3: { ko: "3. 서비스의 내용 및 제공", en: "3. Service content and provision" },
+    l3a: { ko: "스위샷은 무료로 제공되며, 현재는 광고나 유료 결제 요소를 포함하지 않습니다.", en: "SwyShot is provided free of charge and currently contains no ads or paid elements." },
+    l3b: { ko: "회사는 기능 개선, 오류 수정 등을 위해 서비스 내용을 수시로 변경할 수 있습니다.", en: "The Company may change the Service from time to time for feature improvements or bug fixes." },
+    l3c: { ko: "회사는 운영상·기술상 필요에 따라 서비스의 전부 또는 일부를 예고 없이 중단할 수 있습니다.", en: "The Company may suspend all or part of the Service without prior notice for operational or technical reasons." },
+    h2_4: { ko: "4. 이용자의 의무", en: "4. User obligations" },
+    p4a: { ko: "이용자는 스위샷을 이용함에 있어 다음 행위를 해서는 안 됩니다.", en: "When using SwyShot, users must not:" },
+    l4a: { ko: "타인의 저작물, 개인정보, 초상권 등을 침해하는 목적으로 캡쳐·댓글 기능을 사용하는 행위", en: "Use the capture or comment features to infringe on others' copyrighted works, personal data, or likeness rights" },
+    l4b: { ko: "스위샷의 소스코드를 역컴파일·리버스 엔지니어링하거나 무단으로 재배포하는 행위", en: "Decompile, reverse-engineer, or redistribute SwyShot's source code without authorization" },
+    l4c: { ko: "서비스의 정상적인 운영을 방해하는 행위", en: "Interfere with the normal operation of the Service" },
+    p4b: {
+      ko: "캡쳐한 이미지와 댓글 내용에 대한 책임은 이를 생성한 이용자 본인에게 있으며, 회사는 이용자가 생성한 콘텐츠의 내용에 대해 사전에 검수하거나 개입하지 않습니다.",
+      en: "Responsibility for captured images and comment content lies with the user who created them. The Company does not review or intervene in user-generated content in advance."
+    },
+    h2_5: { ko: "5. 지적재산권", en: "5. Intellectual property" },
+    p5: {
+      ko: "스위샷의 소스코드, 디자인, 로고 등에 대한 저작권은 회사에 있습니다. 이용자가 스위샷으로 생성한 캡쳐 이미지·댓글·저장 파일의 저작권은 해당 콘텐츠를 만든 이용자에게 있으며, 회사는 이를 수집하거나 이용하지 않습니다.",
+      en: "Copyright in SwyShot's source code, design, and logo belongs to the Company. Copyright in captured images, comments, and saved files that users create with SwyShot belongs to the user who created them; the Company does not collect or use this content."
+    },
+    h2_6: { ko: "6. 면책조항", en: "6. Disclaimer" },
+    p6a: {
+      ko: '스위샷은 <strong>현재 상태 그대로("AS-IS")</strong> 제공되며, 회사는 서비스의 완전성·정확성·안정성을 보증하지 않습니다. 회사는 다음의 경우에 대해 책임을 지지 않습니다.',
+      en: 'SwyShot is provided <strong>"AS-IS,"</strong> and the Company does not warrant its completeness, accuracy, or reliability. The Company is not liable for:'
+    },
+    l6a: { ko: "천재지변, 브라우저·운영체제 업데이트 등 회사가 통제할 수 없는 사유로 인한 서비스 장애", en: "Service disruption caused by events beyond the Company's control, such as natural disasters or browser/OS updates" },
+    l6b: { ko: "이용자가 캡쳐·저장한 콘텐츠의 손실, 또는 이용자가 직접 생성한 콘텐츠로 인해 발생한 분쟁", en: "Loss of content the user captured or saved, or disputes arising from content the user created" },
+    l6c: { ko: "이용자의 귀책 사유로 인한 서비스 이용 장애", en: "Service issues caused by the user's own fault" },
+    h2_7: { ko: "7. 약관의 변경", en: "7. Changes to these Terms" },
+    p7: {
+      ko: "회사는 필요한 경우 본 약관을 변경할 수 있으며, 변경 시 이 페이지에 개정 내용과 시행일을 공지합니다. 변경된 약관은 공지 후 계속 서비스를 이용하는 경우 동의한 것으로 간주합니다.",
+      en: "The Company may change these Terms when necessary, and will post the revised content and effective date on this page. Continuing to use the Service after such notice constitutes agreement to the revised Terms."
+    },
+    h2_8: { ko: "8. 준거법 및 관할", en: "8. Governing law and jurisdiction" },
+    p8: {
+      ko: "본 약관은 대한민국 법령에 따라 해석되며, 서비스 이용과 관련하여 분쟁이 발생할 경우 민사소송법상의 관할 법원에 제기합니다.",
+      en: "These Terms are governed by the laws of the Republic of Korea. Any dispute arising from use of the Service shall be brought before the court with jurisdiction under the Civil Procedure Act."
+    },
+    contactLabel: { ko: "문의", en: "Contact" },
+    relatedLabel: { ko: "관련 문서", en: "Related" },
+    privacyLink: { ko: "개인정보처리방침", en: "Privacy Policy" },
+    madeByLabel: { ko: "제작", en: "Made by" }
+  };
+
+  function detectLang() {
+    try {
+      var saved = localStorage.getItem("swyshot_lang");
+      if (saved === "ko" || saved === "en") return saved;
+    } catch (e) {}
+    var nav = (navigator.language || (navigator.languages && navigator.languages[0]) || "en").toLowerCase();
+    return nav.indexOf("ko") === 0 ? "ko" : "en";
+  }
+
+  function applyLang(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var msg = MESSAGES[el.dataset.i18n];
+      if (msg) el.innerHTML = msg[lang];
+    });
+    document.querySelectorAll(".lang-switch button").forEach(function (b) {
+      b.classList.toggle("active", b.dataset.lang === lang);
+    });
+    try { localStorage.setItem("swyshot_lang", lang); } catch (e) {}
+  }
+
+  document.querySelectorAll(".lang-switch button").forEach(function (b) {
+    b.addEventListener("click", function () { applyLang(b.dataset.lang); });
+  });
+
+  applyLang(detectLang());
+</script>
