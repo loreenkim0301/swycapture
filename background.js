@@ -74,10 +74,35 @@ async function startCapture(mode, tabId, windowId) {
     return;
   }
 
+  // 이전에 "영역 선택"을 시작해놓고 드래그/Esc 없이 다른 캡쳐를 눌렀다면
+  // 오버레이(반투명 배경 + 십자 커서)가 페이지에 그대로 남아있을 수 있다.
+  // 그 상태로 현재 화면/전체 페이지를 캡쳐하면 오버레이까지 같이 찍혀버리므로
+  // 어떤 모드든 캡쳐를 새로 시작하기 전에 항상 정리한다.
+  if (mode !== "region") {
+    await removeStraySelectionOverlay(tabId);
+    await delay(50); // 오버레이 제거 후 리페인트 대기
+  }
+
   if (mode === "visible") return captureVisible(windowId);
   if (mode === "fullpage") return captureFullPage(tabId, windowId);
   if (mode === "region") return startRegionSelection(tabId);
   console.error("[SwyCapture] 알 수 없는 캡쳐 모드:", mode);
+}
+
+function removeSelectionOverlayInPage() {
+  const overlay = document.getElementById("__swyshot_overlay__");
+  if (overlay) overlay.remove();
+}
+
+async function removeStraySelectionOverlay(tabId) {
+  if (!tabId) return;
+  try {
+    await chrome.scripting.executeScript({ target: { tabId }, func: removeSelectionOverlayInPage });
+  } catch (err) {
+    // 스크립트 주입 자체가 안 되는 페이지(제한된 페이지)라면 위쪽의
+    // isRestrictedTab 검사에서 이미 걸러졌을 것이므로 여기선 조용히 무시한다.
+    console.log("[SwyCapture] 이전 오버레이 정리 스킵:", err.message);
+  }
 }
 
 // chrome://, 확장 프로그램 관리 페이지, Chrome 웹 스토어 등은 정책상 어떤 확장도
@@ -268,7 +293,8 @@ async function captureFullPage(tabId, windowId) {
 
 // ---------- 모드 3: 영역 선택 (드래그 → 크롭) ----------
 function injectSelectionOverlay() {
-  if (document.getElementById("__swyshot_overlay__")) return;
+  const existing = document.getElementById("__swyshot_overlay__");
+  if (existing) existing.remove(); // 이전 시도가 남아있다면 새로 시작
 
   const overlay = document.createElement("div");
   overlay.id = "__swyshot_overlay__";
