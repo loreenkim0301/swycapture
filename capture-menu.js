@@ -1,4 +1,4 @@
-// [SwyShot] capture-menu.js
+// [SwyCapture] capture-menu.js
 document.documentElement.lang = chrome.i18n.getUILanguage();
 document.querySelectorAll("[data-i18n]").forEach((el) => {
   el.textContent = chrome.i18n.getMessage(el.dataset.i18n);

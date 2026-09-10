@@ -1,14 +1,14 @@
 {
-  "extName": { "message": "스위샷 (SwyShot) - 무료 스크린샷 캡쳐와 댓글 기능" },
+  "extName": { "message": "스위캡쳐 (SwyCapture) - 무료 스크린샷 캡쳐와 댓글 기능" },
   "extDescription": {
     "message": "웹페이지를 캡쳐한 즉시 이미지 위에 핀을 찍어 댓글을 붙이고 HTML/PNG/PDF로 저장하는 확장. 현재 화면 / 전체 페이지(스크롤 전체) / 영역 선택 3가지 캡쳐 모드를 지원합니다."
   },
-  "actionTitle": { "message": "스위샷으로 캡쳐" },
+  "actionTitle": { "message": "스위캡쳐로 캡쳐" },
   "cmdCaptureVisible": { "message": "현재 화면 캡쳐" },
   "cmdCaptureFullPage": { "message": "전체 페이지(스크롤 전체) 캡쳐" },
   "cmdCaptureRegion": { "message": "영역 선택 캡쳐" },
 
-  "menuTitle": { "message": "스위샷" },
+  "menuTitle": { "message": "스위캡쳐" },
   "menuVisibleTitle": { "message": "현재 화면 캡쳐" },
   "menuVisibleDesc": { "message": "지금 보이는 화면 그대로" },
   "menuFullpageTitle": { "message": "전체 페이지 캡쳐" },
@@ -21,13 +21,13 @@
   "footerWebsite": { "message": "셀렉트웨이" },
   "footerEmail": { "message": "Email" },
 
-  "ctxRoot": { "message": "스위샷으로 캡쳐" },
+  "ctxRoot": { "message": "스위캡쳐로 캡쳐" },
   "ctxVisible": { "message": "현재 화면 캡쳐" },
   "ctxFullpage": { "message": "전체 페이지 캡쳐 (스크롤 전체)" },
   "ctxRegion": { "message": "영역 선택 캡쳐" },
 
   "errFullPageTooLarge": {
-    "message": "페이지가 너무 길어서(또는 넓어서) 전체 캡쳐할 수 없습니다. (스위샷 테스트 버전 제한)"
+    "message": "페이지가 너무 길어서(또는 넓어서) 전체 캡쳐할 수 없습니다. (스위캡쳐 테스트 버전 제한)"
   },
   "errFullPageFailed": {
     "message": "전체 페이지 캡쳐에 실패했습니다: $ERROR$",
@@ -38,8 +38,8 @@
     "placeholders": { "error": { "content": "$1" } }
   },
 
-  "annotatorTitle": { "message": "스위샷 — 댓글 달기" },
-  "brandName": { "message": "스위샷" },
+  "annotatorTitle": { "message": "스위캡쳐 — 댓글 달기" },
+  "brandName": { "message": "스위캡쳐" },
   "headerHint": { "message": "핀을 클릭하면 오른쪽 댓글과 연결선으로 표시됩니다. 핀은 드래그해서 위치를 옮길 수 있어요." },
   "authorBtnDefault": { "message": "이름 설정" },
   "authorBtnWithName": {
@@ -79,16 +79,16 @@
   },
 
   "exportPageTitle": {
-    "message": "SwyShot Capture — $DATE$",
+    "message": "SwyCapture — $DATE$",
     "placeholders": { "date": { "content": "$1" } }
   },
   "exportMetaLine": {
-    "message": "SwyShot 캡쳐 — $DATE$ · 댓글 $COUNT$개",
+    "message": "SwyCapture 캡쳐 — $DATE$ · 댓글 $COUNT$개",
     "placeholders": { "date": { "content": "$1" }, "count": { "content": "$2" } }
   },
   "exportSidebarTitle": { "message": "댓글 목록" },
   "exportInstructions": {
-    "message": "이 파일은 SwyShot으로 만들어진 자기설명 스크린샷 주석 파일입니다. image는 base64 PNG이고, comments[]의 xPercent/yPercent는 이미지 좌측상단(0,0) 기준 백분율 좌표입니다. 이 JSON만으로 전체 내용을 복원할 수 있습니다."
+    "message": "이 파일은 SwyCapture으로 만들어진 자기설명 스크린샷 주석 파일입니다. image는 base64 PNG이고, comments[]의 xPercent/yPercent는 이미지 좌측상단(0,0) 기준 백분율 좌표입니다. 이 JSON만으로 전체 내용을 복원할 수 있습니다."
   },
 
   "unknownError": { "message": "알 수 없는 오류" },

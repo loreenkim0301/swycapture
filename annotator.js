@@ -1,4 +1,4 @@
-// [SwyShot] annotator.js
+// [SwyCapture] annotator.js
 (function () {
   function t(key, subs) {
     return chrome.i18n.getMessage(key, subs) || key;
@@ -372,7 +372,7 @@
     chrome.downloads.download({ url, filename, saveAs: false }, (downloadId) => {
       if (chrome.runtime.lastError || downloadId === undefined) {
         const reason = chrome.runtime.lastError ? chrome.runtime.lastError.message : t("unknownError");
-        console.error("[SwyShot] 다운로드 실패:", reason);
+        console.error("[SwyCapture] 다운로드 실패:", reason);
         showSaveError(reason);
         URL.revokeObjectURL(url);
         if (onDone) onDone();
@@ -385,7 +385,7 @@
           chrome.downloads.onChanged.removeListener(onChanged);
           if (onDone) onDone();
         } else if (delta.state && delta.state.current === "interrupted") {
-          console.error("[SwyShot] 다운로드 중단:", delta.error && delta.error.current);
+          console.error("[SwyCapture] 다운로드 중단:", delta.error && delta.error.current);
           showSaveError(delta.error ? delta.error.current : t("downloadInterrupted"));
           URL.revokeObjectURL(url);
           chrome.downloads.onChanged.removeListener(onChanged);
@@ -460,8 +460,8 @@
 
     return `<!DOCTYPE html>
 <!--
-  [SwyShot 스냅샷 헤더]
-  이 파일은 SwyShot(스위샷) 테스트 버전으로 생성된 단일 HTML 스크린샷 주석 파일입니다.
+  [SwyCapture 스냅샷 헤더]
+  이 파일은 SwyCapture(스위캡쳐) 테스트 버전으로 생성된 단일 HTML 스크린샷 주석 파일입니다.
   - 이미지: <img id="swyshot-image">에 base64로 내장되어 있습니다.
   - 댓글 데이터: <script type="application/json" id="swyshot-comments">에 자기설명 구조로 내장되어 있습니다.
   - 서버/클라우드 업로드 없이 이 파일 하나만으로 이미지+댓글이 모두 보존됩니다.
@@ -597,7 +597,7 @@
         });
       })
       .catch((err) => {
-        console.error("[SwyShot] PNG 생성 실패:", err);
+        console.error("[SwyCapture] PNG 생성 실패:", err);
         showSaveError(String(err));
         savePngBtn.disabled = false;
         savePngBtn.textContent = t("savePngBtn");

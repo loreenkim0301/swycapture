@@ -1,8 +1,8 @@
 # 크롬 웹 스토어 등록 텍스트 (v1.1.0)
 
 ## 이름
-- 한국어: 스위샷 (SwyShot) - 무료 스크린샷 캡쳐와 댓글 기능
-- English: SwyShot (스위샷) - Free Screenshot Capture & Comments
+- 한국어: 스위캡쳐 (SwyCapture) - 무료 스크린샷 캡쳐와 댓글 기능
+- English: SwyCapture (스위캡쳐) - Free Screenshot Capture & Comments
 
 ## 요약 (Summary, 132자 이내)
 웹페이지를 캡쳐한 즉시 이미지 위에 핀을 찍어 댓글을 달고 HTML/PNG/PDF로 저장하는 확장. 현재 화면·전체 페이지·영역 선택 3가지 캡쳐 모드를 지원합니다.
@@ -12,7 +12,7 @@
 
 ## 자세한 설명
 
-스위샷(SwyShot)은 웹페이지를 캡쳐한 즉시, 그 화면 위에 번호 핀을 찍어 댓글을 남기고 HTML·PNG·PDF로 저장하는 크롬 확장입니다.
+스위캡쳐(SwyCapture)는 웹페이지를 캡쳐한 즉시, 그 화면 위에 번호 핀을 찍어 댓글을 남기고 HTML·PNG·PDF로 저장하는 크롬 확장입니다.
 
 ■ 캡쳐 3가지 모드
 · 현재 화면 캡쳐 — 지금 보이는 화면 그대로 (단축키 Cmd/Ctrl+Shift+S)
@@ -47,7 +47,7 @@ Capture a webpage and instantly pin comments on it, then save as HTML/PNG/PDF. S
 
 **Description**
 
-SwyShot captures a webpage and lets you drop numbered pins with comments right on the screenshot, then save it as HTML, PNG, or PDF.
+SwyCapture captures a webpage and lets you drop numbered pins with comments right on the screenshot, then save it as HTML, PNG, or PDF.
 
 ■ Three capture modes
 · Visible area — exactly what's on screen (shortcut: Cmd/Ctrl+Shift+S)
@@ -56,7 +56,7 @@ SwyShot captures a webpage and lets you drop numbered pins with comments right o
 
 ■ Comments & name
 · Click anywhere on the captured image to drop a numbered pin and leave a comment.
-· On your first comment, SwyShot asks whether to show your name — it's remembered after that (changeable anytime from the header).
+· On your first comment, SwyCapture asks whether to show your name — it's remembered after that (changeable anytime from the header).
 
 ■ Save formats
 · HTML — a single self-contained file with the image and comments, viewable/shareable with no server upload

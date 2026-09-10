@@ -1,14 +1,14 @@
 {
-  "extName": { "message": "SwyShot (스위샷) - Free Screenshot Capture & Comments" },
+  "extName": { "message": "SwyCapture (스위캡쳐) - Free Screenshot Capture & Comments" },
   "extDescription": {
     "message": "Capture a webpage and instantly pin comments on it, then save as HTML/PNG/PDF. Supports 3 capture modes: visible area / full page (whole scroll) / selected region."
   },
-  "actionTitle": { "message": "Capture with SwyShot" },
+  "actionTitle": { "message": "Capture with SwyCapture" },
   "cmdCaptureVisible": { "message": "Capture visible area" },
   "cmdCaptureFullPage": { "message": "Capture full page (whole scroll)" },
   "cmdCaptureRegion": { "message": "Capture selected region" },
 
-  "menuTitle": { "message": "SwyShot" },
+  "menuTitle": { "message": "SwyCapture" },
   "menuVisibleTitle": { "message": "Capture visible area" },
   "menuVisibleDesc": { "message": "Exactly what's on screen now" },
   "menuFullpageTitle": { "message": "Capture full page" },
@@ -21,13 +21,13 @@
   "footerWebsite": { "message": "Selectway" },
   "footerEmail": { "message": "Email" },
 
-  "ctxRoot": { "message": "Capture with SwyShot" },
+  "ctxRoot": { "message": "Capture with SwyCapture" },
   "ctxVisible": { "message": "Capture visible area" },
   "ctxFullpage": { "message": "Capture full page (whole scroll)" },
   "ctxRegion": { "message": "Capture selected region" },
 
   "errFullPageTooLarge": {
-    "message": "The page is too long (or too wide) to capture in full. (SwyShot beta limitation)"
+    "message": "The page is too long (or too wide) to capture in full. (SwyCapture beta limitation)"
   },
   "errFullPageFailed": {
     "message": "Full page capture failed: $ERROR$",
@@ -38,8 +38,8 @@
     "placeholders": { "error": { "content": "$1" } }
   },
 
-  "annotatorTitle": { "message": "SwyShot — Add comments" },
-  "brandName": { "message": "SwyShot" },
+  "annotatorTitle": { "message": "SwyCapture — Add comments" },
+  "brandName": { "message": "SwyCapture" },
   "headerHint": { "message": "Click a pin to link it to a comment on the right. Drag a pin to move it." },
   "authorBtnDefault": { "message": "Set name" },
   "authorBtnWithName": {
@@ -79,16 +79,16 @@
   },
 
   "exportPageTitle": {
-    "message": "SwyShot Capture — $DATE$",
+    "message": "SwyCapture — $DATE$",
     "placeholders": { "date": { "content": "$1" } }
   },
   "exportMetaLine": {
-    "message": "SwyShot capture — $DATE$ · $COUNT$ comments",
+    "message": "SwyCapture — $DATE$ · $COUNT$ comments",
     "placeholders": { "date": { "content": "$1" }, "count": { "content": "$2" } }
   },
   "exportSidebarTitle": { "message": "Comments" },
   "exportInstructions": {
-    "message": "This is a self-describing screenshot annotation file made with SwyShot. image is a base64 PNG, and comments[].xPercent/yPercent are percentage coordinates relative to the image's top-left corner (0,0). This JSON alone is enough to reconstruct the full content."
+    "message": "This is a self-describing screenshot annotation file made with SwyCapture. image is a base64 PNG, and comments[].xPercent/yPercent are percentage coordinates relative to the image's top-left corner (0,0). This JSON alone is enough to reconstruct the full content."
   },
 
   "unknownError": { "message": "Unknown error" },

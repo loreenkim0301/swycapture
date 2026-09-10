@@ -1,4 +1,4 @@
-// [SwyShot] background.js — v1.0.0
+// [SwyCapture] background.js — v1.0.0
 // 캡쳐 모드 3가지: 현재 화면 / 전체 페이지(스크롤 전체 스티칭) / 영역 선택(드래그 후 크롭)
 // 트리거: 툴바 아이콘 클릭(팝업 메뉴, capture-menu.html) / 우클릭 서브메뉴 / 단축키(현재 화면은 기본 배정)
 
@@ -54,7 +54,7 @@ chrome.runtime.onMessage.addListener((msg, sender) => {
   }
 
   if (msg.type === "swyshot-region-cancelled") {
-    console.log("[SwyShot] 영역 선택이 취소되었습니다.");
+    console.log("[SwyCapture] 영역 선택이 취소되었습니다.");
     return;
   }
 });
@@ -63,7 +63,7 @@ function startCapture(mode, tabId, windowId) {
   if (mode === "visible") return captureVisible(windowId);
   if (mode === "fullpage") return captureFullPage(tabId, windowId);
   if (mode === "region") return startRegionSelection(tabId);
-  console.error("[SwyShot] 알 수 없는 캡쳐 모드:", mode);
+  console.error("[SwyCapture] 알 수 없는 캡쳐 모드:", mode);
 }
 
 // ---------- 공통 유틸 ----------
@@ -115,13 +115,13 @@ function saveAndOpen(dataUrl) {
 
 async function alertInTab(tabId, message) {
   if (!tabId) {
-    console.error("[SwyShot]", message);
+    console.error("[SwyCapture]", message);
     return;
   }
   try {
     await chrome.scripting.executeScript({ target: { tabId }, func: (m) => alert(m), args: [message] });
   } catch (err) {
-    console.error("[SwyShot]", message);
+    console.error("[SwyCapture]", message);
   }
 }
 
@@ -131,7 +131,7 @@ async function captureVisible(windowId) {
     const dataUrl = await captureVisibleTabSafe(windowId);
     saveAndOpen(dataUrl);
   } catch (err) {
-    console.error("[SwyShot] 캡쳐 실패:", err);
+    console.error("[SwyCapture] 캡쳐 실패:", err);
   }
 }
 
@@ -207,7 +207,7 @@ async function captureFullPage(tabId, windowId) {
     const dataUrl = await blobToDataUrl(outBlob);
     saveAndOpen(dataUrl);
   } catch (err) {
-    console.error("[SwyShot] 전체 페이지 캡쳐 실패:", err);
+    console.error("[SwyCapture] 전체 페이지 캡쳐 실패:", err);
     alertInTab(tabId, chrome.i18n.getMessage("errFullPageFailed", [err.message]));
   }
 }
@@ -294,7 +294,7 @@ async function startRegionSelection(tabId) {
   try {
     await chrome.scripting.executeScript({ target: { tabId }, func: injectSelectionOverlay });
   } catch (err) {
-    console.error("[SwyShot] 영역 선택 오버레이 삽입 실패:", err);
+    console.error("[SwyCapture] 영역 선택 오버레이 삽입 실패:", err);
   }
 }
 
@@ -318,7 +318,7 @@ async function finishRegionCapture(tabId, windowId, rect, dpr) {
     const croppedDataUrl = await blobToDataUrl(outBlob);
     saveAndOpen(croppedDataUrl);
   } catch (err) {
-    console.error("[SwyShot] 영역 캡쳐 실패:", err);
+    console.error("[SwyCapture] 영역 캡쳐 실패:", err);
     alertInTab(tabId, chrome.i18n.getMessage("errRegionFailed", [err.message]));
   }
 }
