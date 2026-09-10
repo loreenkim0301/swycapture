@@ -39,15 +39,17 @@ chrome.commands.onCommand.addListener((command, tab) => {
   if (command === "capture-region") startCapture("region", tab.id, tab.windowId);
 });
 
-chrome.runtime.onMessage.addListener((msg, sender) => {
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (!msg || !msg.type) return;
 
   if (msg.type === "swyshot-start-capture") {
-    startCapture(msg.mode, msg.tabId, msg.windowId);
-    return;
+    console.log("[SwyCapture] 메시지 수신: swyshot-start-capture", msg);
+    startCapture(msg.mode, msg.tabId, msg.windowId).finally(() => sendResponse({ ok: true }));
+    return true; // 비동기 응답을 위해 채널을 열어둔다 (팝업의 sendMessage가 끊기지 않도록)
   }
 
   if (msg.type === "swyshot-region-selected") {
+    console.log("[SwyCapture] 메시지 수신: swyshot-region-selected", msg);
     const tab = sender.tab;
     if (tab) finishRegionCapture(tab.id, tab.windowId, msg.rect, msg.devicePixelRatio);
     return;
@@ -59,11 +61,41 @@ chrome.runtime.onMessage.addListener((msg, sender) => {
   }
 });
 
-function startCapture(mode, tabId, windowId) {
+async function startCapture(mode, tabId, windowId) {
+  console.log("[SwyCapture] startCapture 호출:", { mode, tabId, windowId });
+
+  const restricted = await isRestrictedTab(tabId);
+  if (restricted) {
+    console.error("[SwyCapture] 캡쳐할 수 없는 페이지입니다:", restricted);
+    notify(
+      chrome.i18n.getMessage("notifyErrorTitle"),
+      chrome.i18n.getMessage("errRestrictedPage")
+    );
+    return;
+  }
+
   if (mode === "visible") return captureVisible(windowId);
   if (mode === "fullpage") return captureFullPage(tabId, windowId);
   if (mode === "region") return startRegionSelection(tabId);
   console.error("[SwyCapture] 알 수 없는 캡쳐 모드:", mode);
+}
+
+// chrome://, 확장 프로그램 관리 페이지, Chrome 웹 스토어 등은 정책상 어떤 확장도
+// 캡쳐/스크립트 주입을 할 수 없다. 시도 전에 감지해서 명확한 안내를 준다.
+async function isRestrictedTab(tabId) {
+  if (!tabId) return null;
+  try {
+    const tab = await chrome.tabs.get(tabId);
+    const url = tab.url || "";
+    const isRestricted =
+      /^(chrome|edge|about|chrome-extension|devtools):/i.test(url) ||
+      url.startsWith("https://chrome.google.com/webstore") ||
+      url.startsWith("https://chromewebstore.google.com");
+    return isRestricted ? url : null;
+  } catch (err) {
+    console.error("[SwyCapture] 탭 정보 조회 실패:", err);
+    return null;
+  }
 }
 
 // ---------- 공통 유틸 ----------
@@ -110,28 +142,48 @@ async function blobToDataUrl(blob) {
 function saveAndOpen(dataUrl) {
   chrome.storage.local.set({ swyshotImage: dataUrl, swyshotCapturedAt: Date.now() }, () => {
     chrome.tabs.create({ url: chrome.runtime.getURL("annotator.html") });
+    notifySuccess();
   });
 }
 
-async function alertInTab(tabId, message) {
-  if (!tabId) {
-    console.error("[SwyCapture]", message);
-    return;
-  }
+// 페이지에 스크립트를 주입해 alert()을 띄우는 방식은 chrome://, 웹스토어 등
+// 제한된 페이지에서는 그 자체가 실패해 사용자에게 아무 반응도 보이지 않는 문제가 있었다.
+// chrome.notifications는 페이지 종류와 무관하게 항상 표시되므로 이걸로 대체한다.
+let notifyIdSeq = 0;
+function notify(title, message) {
+  const id = "swyshot-" + Date.now() + "-" + notifyIdSeq++;
   try {
-    await chrome.scripting.executeScript({ target: { tabId }, func: (m) => alert(m), args: [message] });
+    chrome.notifications.create(id, {
+      type: "basic",
+      iconUrl: chrome.runtime.getURL("icons/icon128.png"),
+      title,
+      message
+    });
   } catch (err) {
-    console.error("[SwyCapture]", message);
+    console.error("[SwyCapture] 알림 표시 실패:", err);
   }
+}
+
+function notifySuccess() {
+  console.log("[SwyCapture] 캡쳐 완료");
+  notify(chrome.i18n.getMessage("notifySuccessTitle"), chrome.i18n.getMessage("notifySuccessMessage"));
+}
+
+function notifyError(messageKey, ...substitutions) {
+  const message = chrome.i18n.getMessage(messageKey, substitutions);
+  console.error("[SwyCapture]", message);
+  notify(chrome.i18n.getMessage("notifyErrorTitle"), message);
 }
 
 // ---------- 모드 1: 현재 화면 ----------
 async function captureVisible(windowId) {
+  console.log("[SwyCapture] 현재 화면 캡쳐 시작");
   try {
     const dataUrl = await captureVisibleTabSafe(windowId);
     saveAndOpen(dataUrl);
   } catch (err) {
-    console.error("[SwyCapture] 캡쳐 실패:", err);
+    console.error("[SwyCapture] 현재 화면 캡쳐 실패:", err);
+    notifyError("errVisibleFailed", err.message);
   }
 }
 
@@ -164,6 +216,7 @@ async function execInTab(tabId, func, args) {
 }
 
 async function captureFullPage(tabId, windowId) {
+  console.log("[SwyCapture] 전체 페이지 캡쳐 시작");
   try {
     const metrics = await execInTab(tabId, getPageMetrics);
     const dpr = metrics.devicePixelRatio;
@@ -171,7 +224,8 @@ async function captureFullPage(tabId, windowId) {
     const canvasH = Math.round(metrics.scrollHeight * dpr);
 
     if (canvasW > 32000 || canvasH > 32000) {
-      alertInTab(tabId, chrome.i18n.getMessage("errFullPageTooLarge"));
+      notify(chrome.i18n.getMessage("notifyErrorTitle"), chrome.i18n.getMessage("errFullPageTooLarge"));
+      console.error("[SwyCapture] 전체 페이지가 너무 큽니다:", canvasW, canvasH);
       return;
     }
 
@@ -208,7 +262,7 @@ async function captureFullPage(tabId, windowId) {
     saveAndOpen(dataUrl);
   } catch (err) {
     console.error("[SwyCapture] 전체 페이지 캡쳐 실패:", err);
-    alertInTab(tabId, chrome.i18n.getMessage("errFullPageFailed", [err.message]));
+    notifyError("errFullPageFailed", err.message);
   }
 }
 
@@ -291,14 +345,18 @@ function injectSelectionOverlay() {
 }
 
 async function startRegionSelection(tabId) {
+  console.log("[SwyCapture] 영역 선택 오버레이 삽입 시도");
   try {
     await chrome.scripting.executeScript({ target: { tabId }, func: injectSelectionOverlay });
+    console.log("[SwyCapture] 영역 선택 오버레이 삽입 완료 — 드래그로 영역을 선택해주세요.");
   } catch (err) {
     console.error("[SwyCapture] 영역 선택 오버레이 삽입 실패:", err);
+    notifyError("errRegionOverlayFailed", err.message);
   }
 }
 
 async function finishRegionCapture(tabId, windowId, rect, dpr) {
+  console.log("[SwyCapture] 영역 캡쳐 진행:", rect);
   try {
     const dataUrl = await captureVisibleTabSafe(windowId);
     const blob = await (await fetch(dataUrl)).blob();
@@ -319,6 +377,6 @@ async function finishRegionCapture(tabId, windowId, rect, dpr) {
     saveAndOpen(croppedDataUrl);
   } catch (err) {
     console.error("[SwyCapture] 영역 캡쳐 실패:", err);
-    alertInTab(tabId, chrome.i18n.getMessage("errRegionFailed", [err.message]));
+    notifyError("errRegionFailed", err.message);
   }
 }
