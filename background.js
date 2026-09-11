@@ -213,10 +213,54 @@ async function captureVisible(windowId) {
 }
 
 // ---------- 모드 2: 전체 페이지 (스크롤 전체 스티칭) ----------
+// 일부 페이지(특히 사이드바가 있는 문서형 레이아웃)는 window/body가 아니라 안쪽의 별도 div가
+// 실제로 스크롤되는 컨테이너다. 이런 페이지에서 window.scrollTo()는 아무 효과가 없어서 매번
+// 똑같은 최상단 화면만 캡쳐되고, 그걸 이어붙이면 같은 장면이 반복되거나 사실상 한 화면만
+// 캡쳐된 것처럼 보인다. 그래서 window 자체가 스크롤 불가능하면 화면의 상당 부분을 차지하는
+// 실제 스크롤 컨테이너를 찾아 그걸 스크롤한다. (스위타이머 크롬 확장에서 동일한 문제를
+// 겪고 고친 코드를 그대로 가져옴)
+//
+// 주의: chrome.scripting.executeScript({ func })는 넘긴 함수 "하나"의 소스만 페이지에 주입한다.
+// 같은 파일의 다른 top-level 함수는 주입된 페이지 안에 존재하지 않으므로, 아래에서 쓰는
+// locateScrollRoot는 각 함수 안에 중첩 선언으로 반드시 중복 정의해야 한다(분리하면
+// "locateScrollRoot is not defined"로 즉시 실패한다).
 function getPageMetrics() {
+  function locateScrollRoot() {
+    const doc = document.scrollingElement || document.documentElement;
+    if (doc.scrollHeight > doc.clientHeight + 4) return null; // window 자체 스크롤 사용
+    let best = null;
+    let bestArea = 0;
+    document.querySelectorAll("body *").forEach((el) => {
+      const cs = window.getComputedStyle(el);
+      if (cs.overflowY !== "auto" && cs.overflowY !== "scroll") return;
+      if (el.scrollHeight <= el.clientHeight + 4) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.height < window.innerHeight * 0.4) return;
+      const area = rect.width * rect.height;
+      if (area > bestArea) {
+        bestArea = area;
+        best = el;
+      }
+    });
+    return best;
+  }
+
+  const root = locateScrollRoot();
+  if (root) {
+    return {
+      usesRoot: true,
+      scrollHeight: root.scrollHeight,
+      scrollWidth: root.scrollWidth,
+      viewportHeight: root.clientHeight,
+      viewportWidth: root.clientWidth,
+      devicePixelRatio: window.devicePixelRatio || 1,
+      originalScrollY: root.scrollTop
+    };
+  }
   const doc = document.documentElement;
   const body = document.body;
   return {
+    usesRoot: false,
     scrollHeight: Math.max(doc.scrollHeight, body ? body.scrollHeight : 0),
     scrollWidth: Math.max(doc.scrollWidth, body ? body.scrollWidth : 0),
     viewportHeight: window.innerHeight,
@@ -227,8 +271,61 @@ function getPageMetrics() {
 }
 
 function scrollAndReport(y) {
+  function locateScrollRoot() {
+    const doc = document.scrollingElement || document.documentElement;
+    if (doc.scrollHeight > doc.clientHeight + 4) return null;
+    let best = null;
+    let bestArea = 0;
+    document.querySelectorAll("body *").forEach((el) => {
+      const cs = window.getComputedStyle(el);
+      if (cs.overflowY !== "auto" && cs.overflowY !== "scroll") return;
+      if (el.scrollHeight <= el.clientHeight + 4) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.height < window.innerHeight * 0.4) return;
+      const area = rect.width * rect.height;
+      if (area > bestArea) {
+        bestArea = area;
+        best = el;
+      }
+    });
+    return best;
+  }
+
+  const root = locateScrollRoot();
+  if (root) {
+    root.scrollTop = y;
+    return root.scrollTop;
+  }
   window.scrollTo(0, y);
   return window.scrollY;
+}
+
+// position:fixed/sticky 요소는 스크롤해도 항상 같은 화면 위치에 떠 있으므로, 스크롤-스티칭
+// 방식으로 여러 장을 이어붙이면 매 구간마다 반복해서 찍혀버린다(예: 상단 고정 헤더가 세로로
+// 계속 겹쳐 보임). 스크롤 캡쳐 도중에는 숨겼다가 끝나면 원래대로 되돌린다.
+function hideFixedElements() {
+  const marker = "data-swycapture-prev-visibility";
+  document.querySelectorAll("body *").forEach((el) => {
+    if (el.hasAttribute(marker)) return;
+    const cs = window.getComputedStyle(el);
+    if (cs.position === "fixed" || cs.position === "sticky") {
+      el.setAttribute(marker, el.style.visibility || "");
+      el.style.setProperty("visibility", "hidden", "important");
+    }
+  });
+}
+
+function restoreFixedElements() {
+  const marker = "data-swycapture-prev-visibility";
+  document.querySelectorAll(`[${marker}]`).forEach((el) => {
+    const prev = el.getAttribute(marker);
+    if (prev) {
+      el.style.visibility = prev;
+    } else {
+      el.style.removeProperty("visibility");
+    }
+    el.removeAttribute(marker);
+  });
 }
 
 async function execInTab(tabId, func, args) {
@@ -266,21 +363,25 @@ async function captureFullPage(tabId, windowId) {
     const offscreen = new OffscreenCanvas(canvasW, canvasH);
     const ctx = offscreen.getContext("2d");
 
-    const done = new Set();
-    for (const pos of positions) {
-      if (done.has(pos)) continue;
-      done.add(pos);
+    await execInTab(tabId, hideFixedElements);
+    try {
+      const done = new Set();
+      for (const pos of positions) {
+        if (done.has(pos)) continue;
+        done.add(pos);
 
-      const actualY = await execInTab(tabId, scrollAndReport, [pos]);
-      await delay(220); // 스크롤 후 리페인트/지연로딩 대기
-      const dataUrl = await captureVisibleTabSafe(windowId);
-      const blob = await (await fetch(dataUrl)).blob();
-      const bitmap = await createImageBitmap(blob);
-      ctx.drawImage(bitmap, 0, Math.round(actualY * dpr));
-      bitmap.close();
+        const actualY = await execInTab(tabId, scrollAndReport, [pos]);
+        await delay(220); // 스크롤 후 리페인트/지연로딩 대기
+        const dataUrl = await captureVisibleTabSafe(windowId);
+        const blob = await (await fetch(dataUrl)).blob();
+        const bitmap = await createImageBitmap(blob);
+        ctx.drawImage(bitmap, 0, Math.round(actualY * dpr));
+        bitmap.close();
+      }
+    } finally {
+      await execInTab(tabId, restoreFixedElements);
+      await execInTab(tabId, scrollAndReport, [metrics.originalScrollY]);
     }
-
-    await execInTab(tabId, scrollAndReport, [metrics.originalScrollY]);
 
     const outBlob = await offscreen.convertToBlob({ type: "image/png" });
     const dataUrl = await blobToDataUrl(outBlob);
