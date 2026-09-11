@@ -29,13 +29,9 @@
   const savePdfBtn = document.getElementById("swyshot-save-pdf");
   const savePngBtn = document.getElementById("swyshot-save-png");
   const connectorSvg = document.getElementById("swyshot-connector");
-  const authorBtn = document.getElementById("swyshot-author-btn");
-  const authorModal = document.getElementById("swyshot-author-modal");
-  const authorModalTitleEl = document.getElementById("swyshot-author-modal-title");
-  const authorInput = document.getElementById("swyshot-author-input");
-  const authorSkipBtn = document.getElementById("swyshot-author-skip");
-  const authorSaveBtn = document.getElementById("swyshot-author-save");
-  const authorCancelBtn = document.getElementById("swyshot-author-cancel");
+  const versionEl = document.getElementById("swyshot-version");
+
+  versionEl.textContent = "v" + chrome.runtime.getManifest().version;
 
   emptyEl.innerHTML = t("emptyState").replace(/\n/g, "<br>");
 
@@ -46,12 +42,11 @@
   let pendingPin = null;
   let activeId = null;
   let authorName = "";
-  let authorNamePrompted = false;
-  let authorModalContext = "edit"; // "first" | "edit"
-  let pendingCommentText = null;
+  const DEFAULT_SAVE_FOLDER = "SwyCapture";
+  let saveFolder = DEFAULT_SAVE_FOLDER;
 
   chrome.storage.local.get(
-    ["swyshotImage", "swyshotCapturedAt", "swyshotAuthorName", "swyshotAuthorNamePrompted"],
+    ["swyshotImage", "swyshotCapturedAt", "swyshotAuthorName", "swyshotSaveFolder"],
     (res) => {
       if (!res.swyshotImage) {
         document.body.innerHTML = `<p style="padding:24px;font-family:sans-serif;">${escapeHtml(
@@ -63,60 +58,39 @@
       capturedAt = res.swyshotCapturedAt || Date.now();
       imgEl.src = imageDataUrl;
 
+      // 댓글 작성자 이름은 툴바 팝업(capture-menu)에서 설정한다. 여기서는 이미
+      // 저장된 이름을 읽어와 새 댓글에 붙이기만 한다.
       authorName = res.swyshotAuthorName || "";
-      authorNamePrompted = !!res.swyshotAuthorNamePrompted;
-      updateAuthorBtn();
+
+      saveFolder = sanitizeFolderName(res.swyshotSaveFolder) || DEFAULT_SAVE_FOLDER;
     }
   );
 
-  // ---------- 댓글 작성자 이름 설정 ----------
-  function updateAuthorBtn() {
-    authorBtn.textContent = authorName ? t("authorBtnWithName", [authorName]) : t("authorBtnDefault");
-    authorBtn.classList.toggle("set", !!authorName);
-  }
-
-  function openAuthorModal(context) {
-    authorModalContext = context || "edit";
-    authorModalTitleEl.textContent = t(
-      authorModalContext === "first" ? "authorModalTitleFirst" : "authorModalTitleEdit"
-    );
-    authorInput.value = authorName;
-    authorCancelBtn.hidden = authorModalContext === "first";
-    authorModal.hidden = false;
-    authorInput.focus();
-  }
-
-  function closeAuthorModal() {
-    authorModal.hidden = true;
-  }
-
-  function finalizeAuthorChoice(name) {
-    authorName = name;
-    authorNamePrompted = true;
-    chrome.storage.local.set({ swyshotAuthorName: authorName, swyshotAuthorNamePrompted: true });
-    updateAuthorBtn();
-    closeAuthorModal();
-
-    if (pendingCommentText) {
-      const { xPercent, yPercent, text } = pendingCommentText;
-      pendingCommentText = null;
-      addComment(xPercent, yPercent, text);
+  // 캡쳐 저장 위치는 툴바 팝업(capture-menu)에서 설정한다. 여기서는 저장 시
+  // 사용할 폴더명만 읽어온다. 팝업에서 값이 바뀌면 다음 캡쳐부터 반영되도록
+  // storage 변경도 구독해둔다(같은 세션에서 팝업과 편집 화면을 오갈 수 있으므로).
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === "local" && changes.swyshotSaveFolder) {
+      saveFolder = sanitizeFolderName(changes.swyshotSaveFolder.newValue) || DEFAULT_SAVE_FOLDER;
     }
-  }
-
-  authorBtn.addEventListener("click", () => openAuthorModal("edit"));
-
-  authorCancelBtn.addEventListener("click", () => closeAuthorModal());
-
-  authorModal.addEventListener("click", (e) => {
-    if (e.target === authorModal && authorModalContext !== "first") closeAuthorModal();
   });
 
-  authorSaveBtn.addEventListener("click", () => finalizeAuthorChoice(authorInput.value.trim()));
-  authorSkipBtn.addEventListener("click", () => finalizeAuthorChoice(""));
+  // chrome.downloads의 filename에 "/"를 포함하면 다운로드 폴더 아래 하위 폴더로
+  // 저장된다. 상위 경로 이동(..)이나 구분자 등은 허용하지 않고 폴더명 한 단계로 제한한다.
+  function sanitizeFolderName(name) {
+    return String(name || "")
+      .trim()
+      .replace(/[\\/:*?"<>|]/g, "_")
+      .replace(/^\.+/, "")
+      .slice(0, 50);
+  }
 
-  authorInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") authorSaveBtn.click();
+  // 댓글 작성자 이름 변경 UI는 툴바 팝업(capture-menu)에 있다. 팝업에서 이름을 바꾸면
+  // 같은 세션에서 열려있는 편집 화면에도 다음 댓글부터 반영되도록 storage 변경을 구독한다.
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === "local" && changes.swyshotAuthorName) {
+      authorName = changes.swyshotAuthorName.newValue || "";
+    }
   });
 
   // ---------- 새 댓글 찍기 ----------
@@ -176,12 +150,6 @@
       canvas.removeChild(composer);
       pendingPin = null;
       if (!text) return;
-
-      if (comments.length === 0 && !authorNamePrompted) {
-        pendingCommentText = { xPercent, yPercent, text };
-        openAuthorModal("first");
-        return;
-      }
 
       addComment(xPercent, yPercent, text);
     }
@@ -362,9 +330,10 @@
   function buildFilename(ext) {
     const ts = new Date(capturedAt);
     const pad = (n) => String(n).padStart(2, "0");
-    return `swyshot-${ts.getFullYear()}${pad(ts.getMonth() + 1)}${pad(ts.getDate())}-${pad(ts.getHours())}${pad(
-      ts.getMinutes()
-    )}${pad(ts.getSeconds())}.${ext}`;
+    const name = `swyshot-${ts.getFullYear()}${pad(ts.getMonth() + 1)}${pad(ts.getDate())}-${pad(
+      ts.getHours()
+    )}${pad(ts.getMinutes())}${pad(ts.getSeconds())}.${ext}`;
+    return `${saveFolder}/${name}`;
   }
 
   function downloadBlob(blob, filename, onDone) {

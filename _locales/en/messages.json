@@ -41,12 +41,11 @@
   "annotatorTitle": { "message": "SwyCapture — Add comments" },
   "brandName": { "message": "SwyCapture" },
   "headerHint": { "message": "Click a pin to link it to a comment on the right. Drag a pin to move it." },
-  "authorBtnDefault": { "message": "Set name" },
+  "authorBtnDefault": { "message": "No name set" },
   "authorBtnWithName": {
     "message": "Name: $NAME$",
     "placeholders": { "name": { "content": "$1" } }
   },
-  "authorBtnTitle": { "message": "Set the name shown on comments" },
   "commentCount": {
     "message": "$COUNT$ comments",
     "placeholders": { "count": { "content": "$1" } }
@@ -56,12 +55,11 @@
   "savePngBtn": { "message": "Save as PNG" },
   "savingLabel": { "message": "Saving..." },
 
-  "authorModalTitleFirst": { "message": "Add your name to this comment?" },
-  "authorModalTitleEdit": { "message": "Name shown on comments" },
+  "authorTitle": { "message": "Comment author name" },
   "authorInputPlaceholder": { "message": "Enter your name" },
-  "authorSkipBtn": { "message": "Don't set a name" },
-  "authorSaveBtn": { "message": "Save name" },
+  "authorSaveBtn": { "message": "Save" },
   "authorCancelBtn": { "message": "Cancel" },
+  "authorChangeBtn": { "message": "Change" },
 
   "composerPlaceholder": { "message": "Write a comment" },
   "composerCancel": { "message": "Cancel" },
@@ -89,6 +87,15 @@
   "exportSidebarTitle": { "message": "Comments" },
   "exportInstructions": {
     "message": "This is a self-describing screenshot annotation file made with SwyCapture. image is a base64 PNG, and comments[].xPercent/yPercent are percentage coordinates relative to the image's top-left corner (0,0). This JSON alone is enough to reconstruct the full content."
+  },
+
+  "savePathTitle": { "message": "Capture save location" },
+  "savePathDownloads": { "message": "Downloads" },
+  "savePathChangeBtn": { "message": "Change" },
+  "savePathSaveBtn": { "message": "Save" },
+  "savePathCancelBtn": { "message": "Cancel" },
+  "savePathNote": {
+    "message": "Chrome extensions can only change the subfolder name inside your Downloads folder. To change where Downloads itself lives, use Chrome settings (chrome://settings/downloads)."
   },
 
   "unknownError": { "message": "Unknown error" },
