@@ -37,6 +37,20 @@
     "message": "Region capture failed: $ERROR$",
     "placeholders": { "error": { "content": "$1" } }
   },
+  "errRegionOverlayFailed": {
+    "message": "Couldn't start region selection: $ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+  "errVisibleFailed": {
+    "message": "Capturing the visible area failed: $ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+  "errRestrictedPage": {
+    "message": "Pages like chrome://, the extensions manager, or the Chrome Web Store can't be captured due to browser policy. Please try again on a regular webpage."
+  },
+  "notifySuccessTitle": { "message": "SwyCapture — Done" },
+  "notifySuccessMessage": { "message": "Capture complete — opened in a new tab." },
+  "notifyErrorTitle": { "message": "SwyCapture — Error" },
 
   "annotatorTitle": { "message": "SwyCapture — Add comments" },
   "brandName": { "message": "SwyCapture" },

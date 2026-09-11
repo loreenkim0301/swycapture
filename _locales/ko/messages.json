@@ -37,6 +37,20 @@
     "message": "영역 캡쳐에 실패했습니다: $ERROR$",
     "placeholders": { "error": { "content": "$1" } }
   },
+  "errRegionOverlayFailed": {
+    "message": "영역 선택을 시작하지 못했습니다: $ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+  "errVisibleFailed": {
+    "message": "현재 화면 캡쳐에 실패했습니다: $ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
+  "errRestrictedPage": {
+    "message": "chrome://, 확장 프로그램 관리, Chrome 웹 스토어 같은 페이지는 브라우저 정책상 캡쳐할 수 없습니다. 일반 웹페이지에서 다시 시도해주세요."
+  },
+  "notifySuccessTitle": { "message": "스위캡쳐 완료" },
+  "notifySuccessMessage": { "message": "캡쳐가 완료되어 새 탭에서 열었습니다." },
+  "notifyErrorTitle": { "message": "스위캡쳐 오류" },
 
   "annotatorTitle": { "message": "스위캡쳐 — 댓글 달기" },
   "brandName": { "message": "스위캡쳐" },
