@@ -9,7 +9,7 @@
   <header class="swyshot-header">
     <div class="swyshot-brand">
       <span class="swyshot-dot"></span>
-      <span class="swyshot-title"><span data-i18n="brandName"></span> <span class="swyshot-badge">v1.1.0</span></span>
+      <span class="swyshot-title"><span data-i18n="brandName"></span> <span class="swyshot-badge">v1.2.0</span></span>
     </div>
     <div class="swyshot-hint" data-i18n="headerHint"></div>
     <div class="swyshot-actions">
@@ -47,6 +47,29 @@
 
     <svg id="swyshot-connector" class="swyshot-connector"></svg>
   </main>
+
+  <footer class="swyshot-savepath">
+    <div class="swyshot-savepath-title" data-i18n="savePathTitle"></div>
+
+    <div class="swyshot-savepath-row">
+      <div id="swyshot-savepath-display" class="swyshot-savepath-display">
+        <span data-i18n="savePathDownloads"></span>
+        <span class="swyshot-savepath-sep">/</span>
+        <span id="swyshot-savepath-folder"></span>
+      </div>
+      <button type="button" id="swyshot-savepath-change" class="swyshot-btn-secondary" data-i18n="savePathChangeBtn"></button>
+    </div>
+
+    <div id="swyshot-savepath-edit" class="swyshot-savepath-row" hidden>
+      <span class="swyshot-savepath-editprefix" data-i18n="savePathDownloads"></span>
+      <span class="swyshot-savepath-sep">/</span>
+      <input type="text" id="swyshot-savepath-input" maxlength="50" />
+      <button type="button" id="swyshot-savepath-save" class="swyshot-btn-primary" data-i18n="savePathSaveBtn"></button>
+      <button type="button" id="swyshot-savepath-cancel" data-i18n="savePathCancelBtn"></button>
+    </div>
+
+    <div class="swyshot-savepath-note" data-i18n="savePathNote"></div>
+  </footer>
 
   <script src="annotator.js"></script>
 </body>

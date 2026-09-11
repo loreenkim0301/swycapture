@@ -36,6 +36,13 @@
   const authorSkipBtn = document.getElementById("swyshot-author-skip");
   const authorSaveBtn = document.getElementById("swyshot-author-save");
   const authorCancelBtn = document.getElementById("swyshot-author-cancel");
+  const savePathDisplay = document.getElementById("swyshot-savepath-display");
+  const savePathFolderEl = document.getElementById("swyshot-savepath-folder");
+  const savePathEdit = document.getElementById("swyshot-savepath-edit");
+  const savePathInput = document.getElementById("swyshot-savepath-input");
+  const savePathChangeBtn = document.getElementById("swyshot-savepath-change");
+  const savePathSaveBtn = document.getElementById("swyshot-savepath-save");
+  const savePathCancelBtn = document.getElementById("swyshot-savepath-cancel");
 
   emptyEl.innerHTML = t("emptyState").replace(/\n/g, "<br>");
 
@@ -49,9 +56,11 @@
   let authorNamePrompted = false;
   let authorModalContext = "edit"; // "first" | "edit"
   let pendingCommentText = null;
+  const DEFAULT_SAVE_FOLDER = "SwyCapture";
+  let saveFolder = DEFAULT_SAVE_FOLDER;
 
   chrome.storage.local.get(
-    ["swyshotImage", "swyshotCapturedAt", "swyshotAuthorName", "swyshotAuthorNamePrompted"],
+    ["swyshotImage", "swyshotCapturedAt", "swyshotAuthorName", "swyshotAuthorNamePrompted", "swyshotSaveFolder"],
     (res) => {
       if (!res.swyshotImage) {
         document.body.innerHTML = `<p style="padding:24px;font-family:sans-serif;">${escapeHtml(
@@ -66,8 +75,57 @@
       authorName = res.swyshotAuthorName || "";
       authorNamePrompted = !!res.swyshotAuthorNamePrompted;
       updateAuthorBtn();
+
+      saveFolder = sanitizeFolderName(res.swyshotSaveFolder) || DEFAULT_SAVE_FOLDER;
+      renderSavePath();
     }
   );
+
+  // ---------- 캡쳐 저장 위치 ----------
+  // chrome.downloads의 filename에 "/"를 포함하면 다운로드 폴더 아래 하위 폴더로
+  // 저장된다. 상위 경로 이동(..)이나 구분자 등은 허용하지 않고 폴더명 한 단계로 제한한다.
+  function sanitizeFolderName(name) {
+    return String(name || "")
+      .trim()
+      .replace(/[\\/:*?"<>|]/g, "_")
+      .replace(/^\.+/, "")
+      .slice(0, 50);
+  }
+
+  function renderSavePath() {
+    savePathFolderEl.textContent = saveFolder;
+  }
+
+  function openSavePathEdit() {
+    savePathInput.value = saveFolder;
+    savePathDisplay.hidden = true;
+    savePathChangeBtn.hidden = true;
+    savePathEdit.hidden = false;
+    savePathInput.focus();
+    savePathInput.select();
+  }
+
+  function closeSavePathEdit() {
+    savePathEdit.hidden = true;
+    savePathDisplay.hidden = false;
+    savePathChangeBtn.hidden = false;
+  }
+
+  savePathChangeBtn.addEventListener("click", openSavePathEdit);
+  savePathCancelBtn.addEventListener("click", closeSavePathEdit);
+
+  savePathSaveBtn.addEventListener("click", () => {
+    const next = sanitizeFolderName(savePathInput.value) || DEFAULT_SAVE_FOLDER;
+    saveFolder = next;
+    chrome.storage.local.set({ swyshotSaveFolder: saveFolder });
+    renderSavePath();
+    closeSavePathEdit();
+  });
+
+  savePathInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") savePathSaveBtn.click();
+    if (e.key === "Escape") closeSavePathEdit();
+  });
 
   // ---------- 댓글 작성자 이름 설정 ----------
   function updateAuthorBtn() {
@@ -362,9 +420,10 @@
   function buildFilename(ext) {
     const ts = new Date(capturedAt);
     const pad = (n) => String(n).padStart(2, "0");
-    return `swyshot-${ts.getFullYear()}${pad(ts.getMonth() + 1)}${pad(ts.getDate())}-${pad(ts.getHours())}${pad(
-      ts.getMinutes()
-    )}${pad(ts.getSeconds())}.${ext}`;
+    const name = `swyshot-${ts.getFullYear()}${pad(ts.getMonth() + 1)}${pad(ts.getDate())}-${pad(
+      ts.getHours()
+    )}${pad(ts.getMinutes())}${pad(ts.getSeconds())}.${ext}`;
+    return `${saveFolder}/${name}`;
   }
 
   function downloadBlob(blob, filename, onDone) {

@@ -91,6 +91,15 @@
     "message": "이 파일은 SwyCapture으로 만들어진 자기설명 스크린샷 주석 파일입니다. image는 base64 PNG이고, comments[]의 xPercent/yPercent는 이미지 좌측상단(0,0) 기준 백분율 좌표입니다. 이 JSON만으로 전체 내용을 복원할 수 있습니다."
   },
 
+  "savePathTitle": { "message": "캡처 저장 위치" },
+  "savePathDownloads": { "message": "다운로드" },
+  "savePathChangeBtn": { "message": "변경" },
+  "savePathSaveBtn": { "message": "저장" },
+  "savePathCancelBtn": { "message": "취소" },
+  "savePathNote": {
+    "message": "크롬 확장은 다운로드 폴더 \"안의 하위 폴더명\"만 바꿀 수 있습니다. 다운로드 폴더 자체의 위치는 크롬 설정(chrome://settings/downloads)에서 바꿔야 합니다."
+  },
+
   "unknownError": { "message": "알 수 없는 오류" },
   "downloadInterrupted": { "message": "다운로드가 중단됨" },
   "errCanvasToBlob": { "message": "캔버스를 이미지로 변환하지 못했습니다." },

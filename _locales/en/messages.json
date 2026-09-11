@@ -91,6 +91,15 @@
     "message": "This is a self-describing screenshot annotation file made with SwyCapture. image is a base64 PNG, and comments[].xPercent/yPercent are percentage coordinates relative to the image's top-left corner (0,0). This JSON alone is enough to reconstruct the full content."
   },
 
+  "savePathTitle": { "message": "Capture save location" },
+  "savePathDownloads": { "message": "Downloads" },
+  "savePathChangeBtn": { "message": "Change" },
+  "savePathSaveBtn": { "message": "Save" },
+  "savePathCancelBtn": { "message": "Cancel" },
+  "savePathNote": {
+    "message": "Chrome extensions can only change the subfolder name inside your Downloads folder. To change where Downloads itself lives, use Chrome settings (chrome://settings/downloads)."
+  },
+
   "unknownError": { "message": "Unknown error" },
   "downloadInterrupted": { "message": "Download interrupted" },
   "errCanvasToBlob": { "message": "Failed to convert the canvas to an image." },

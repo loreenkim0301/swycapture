@@ -200,10 +200,36 @@ body {
 
 .swyshot-empty { color: var(--swy-muted); font-size: 13px; text-align: center; padding: 20px 0; }
 
+/* ---------- 캡쳐 저장 위치 ---------- */
+.swyshot-savepath {
+  background: var(--swy-panel);
+  border-top: 1px solid var(--swy-border);
+  padding: 14px 16px 16px;
+  margin-top: 8px;
+}
+.swyshot-savepath-title { font-weight: 700; font-size: 13px; margin-bottom: 8px; }
+.swyshot-savepath-row { display: flex; align-items: center; gap: 8px; }
+.swyshot-savepath-row[hidden] { display: none; }
+.swyshot-savepath-display {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--swy-bg); border: 1px solid var(--swy-border); border-radius: 6px;
+  padding: 8px 12px; font-size: 13px; font-weight: 600; flex: 1; min-width: 0;
+}
+.swyshot-savepath-display[hidden] { display: none; }
+.swyshot-savepath-sep { color: var(--swy-muted); }
+#swyshot-savepath-folder { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.swyshot-savepath-editprefix { font-size: 13px; color: var(--swy-muted); white-space: nowrap; }
+#swyshot-savepath-input {
+  flex: 1; min-width: 0; font-size: 13px; padding: 8px 10px;
+  border: 1px solid var(--swy-cobalt); border-radius: 6px;
+}
+.swyshot-savepath-note { color: var(--swy-muted); font-size: 12px; margin-top: 8px; line-height: 1.5; }
+
 /* ---------- 인쇄(PDF로 저장) ---------- */
 @media print {
   @page { margin: 12mm; }
   body { background: #fff; }
   .swyshot-canvas { page-break-inside: avoid; }
   .swyshot-comment-item { break-inside: avoid; }
+  .swyshot-savepath { display: none; }
 }
