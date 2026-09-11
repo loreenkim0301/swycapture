@@ -41,12 +41,11 @@
   "annotatorTitle": { "message": "스위캡쳐 — 댓글 달기" },
   "brandName": { "message": "스위캡쳐" },
   "headerHint": { "message": "핀을 클릭하면 오른쪽 댓글과 연결선으로 표시됩니다. 핀은 드래그해서 위치를 옮길 수 있어요." },
-  "authorBtnDefault": { "message": "이름 설정" },
+  "authorBtnDefault": { "message": "이름 설정 안 함" },
   "authorBtnWithName": {
     "message": "이름: $NAME$",
     "placeholders": { "name": { "content": "$1" } }
   },
-  "authorBtnTitle": { "message": "댓글에 표시할 이름 설정" },
   "commentCount": {
     "message": "댓글 $COUNT$개",
     "placeholders": { "count": { "content": "$1" } }
@@ -56,12 +55,11 @@
   "savePngBtn": { "message": "PNG로 저장" },
   "savingLabel": { "message": "저장 중..." },
 
-  "authorModalTitleFirst": { "message": "댓글에 이름을 남길까요?" },
-  "authorModalTitleEdit": { "message": "댓글에 표시할 이름" },
+  "authorTitle": { "message": "댓글 작성자 이름" },
   "authorInputPlaceholder": { "message": "이름을 입력하세요" },
-  "authorSkipBtn": { "message": "이름 설정 안 함" },
-  "authorSaveBtn": { "message": "이름 저장" },
+  "authorSaveBtn": { "message": "저장" },
   "authorCancelBtn": { "message": "취소" },
+  "authorChangeBtn": { "message": "변경" },
 
   "composerPlaceholder": { "message": "댓글을 입력하세요" },
   "composerCancel": { "message": "취소" },

@@ -9,7 +9,7 @@
 
 body {
   margin: 0;
-  width: 260px;
+  width: 300px;
   font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   color: var(--swy-ink);
 }
@@ -25,6 +25,11 @@ body {
   padding: 4px 6px 10px;
 }
 .swyshot-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--swy-cobalt); display: inline-block; }
+.swyshot-badge {
+  margin-left: auto;
+  font-size: 10px; font-weight: 700; color: var(--swy-cobalt);
+  border: 1px solid var(--swy-cobalt); border-radius: 4px; padding: 1px 5px;
+}
 
 .swyshot-menu-item {
   width: 100%;
@@ -57,6 +62,46 @@ body {
 .swyshot-menu-copy { display: flex; flex-direction: column; gap: 1px; }
 .swyshot-menu-copy strong { font-size: 13px; }
 .swyshot-menu-copy small { font-size: 11px; color: var(--swy-muted); }
+
+.swyshot-btn-primary {
+  background: var(--swy-cobalt); color: #fff; border: none;
+  padding: 6px 10px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 12px; font-family: inherit;
+}
+.swyshot-btn-primary:hover { filter: brightness(1.08); }
+
+.swyshot-btn-secondary {
+  background: #fff; color: var(--swy-cobalt); border: 1px solid var(--swy-cobalt);
+  padding: 6px 10px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 12px; font-family: inherit;
+  flex-shrink: 0;
+}
+.swyshot-btn-secondary:hover { background: #eef1fd; }
+
+.swyshot-btn-plain {
+  border: none; background: transparent; color: var(--swy-muted);
+  cursor: pointer; font-size: 12px; font-family: inherit; padding: 6px 4px;
+}
+.swyshot-btn-plain:hover { color: var(--swy-ink); }
+
+.swyshot-setting {
+  margin-top: 8px;
+  padding: 10px 6px;
+  border-top: 1px solid var(--swy-border);
+}
+.swyshot-setting-title { font-weight: 700; font-size: 12px; margin-bottom: 6px; }
+.swyshot-setting-row { display: flex; align-items: center; gap: 6px; }
+.swyshot-setting-row[hidden] { display: none; }
+.swyshot-setting-value {
+  display: flex; align-items: center; gap: 5px; min-width: 0; flex: 1;
+  background: #f4f5f7; border: 1px solid var(--swy-border); border-radius: 6px;
+  padding: 6px 8px; font-size: 12px; font-weight: 600;
+}
+.swyshot-setting-value span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.swyshot-setting-sep { color: var(--swy-muted); }
+.swyshot-setting input[type="text"] {
+  flex: 1; min-width: 0; font-size: 12px; padding: 6px 8px;
+  border: 1px solid var(--swy-cobalt); border-radius: 6px; font-family: inherit;
+}
+.swyshot-setting-note { color: var(--swy-muted); font-size: 10px; margin-top: 6px; line-height: 1.4; }
 
 .swyshot-footer {
   margin-top: 8px;

@@ -6,7 +6,11 @@
 </head>
 <body>
   <div class="swyshot-menu">
-    <div class="swyshot-menu-title"><span class="swyshot-dot"></span><span data-i18n="menuTitle"></span></div>
+    <div class="swyshot-menu-title">
+      <span class="swyshot-dot"></span>
+      <span data-i18n="menuTitle"></span>
+      <span id="swyshot-menu-version" class="swyshot-badge"></span>
+    </div>
 
     <button type="button" class="swyshot-menu-item" data-mode="visible">
       <span class="swyshot-menu-icon">▭</span>
@@ -31,6 +35,44 @@
         <small data-i18n="menuRegionDesc"></small>
       </span>
     </button>
+
+    <div class="swyshot-setting">
+      <div class="swyshot-setting-title" data-i18n="authorTitle"></div>
+
+      <div id="swyshot-author-display" class="swyshot-setting-row">
+        <div class="swyshot-setting-value">
+          <span id="swyshot-author-name"></span>
+        </div>
+        <button type="button" id="swyshot-author-change" class="swyshot-btn-secondary" data-i18n="authorChangeBtn"></button>
+      </div>
+
+      <div id="swyshot-author-edit" class="swyshot-setting-row" hidden>
+        <input type="text" id="swyshot-author-input" maxlength="30" data-i18n-placeholder="authorInputPlaceholder" />
+        <button type="button" id="swyshot-author-save" class="swyshot-btn-primary" data-i18n="authorSaveBtn"></button>
+        <button type="button" id="swyshot-author-cancel" class="swyshot-btn-plain" data-i18n="authorCancelBtn"></button>
+      </div>
+    </div>
+
+    <div class="swyshot-setting">
+      <div class="swyshot-setting-title" data-i18n="savePathTitle"></div>
+
+      <div id="swyshot-savepath-display" class="swyshot-setting-row">
+        <div class="swyshot-setting-value">
+          <span data-i18n="savePathDownloads"></span>
+          <span class="swyshot-setting-sep">/</span>
+          <span id="swyshot-savepath-folder"></span>
+        </div>
+        <button type="button" id="swyshot-savepath-change" class="swyshot-btn-secondary" data-i18n="savePathChangeBtn"></button>
+      </div>
+
+      <div id="swyshot-savepath-edit" class="swyshot-setting-row" hidden>
+        <input type="text" id="swyshot-savepath-input" maxlength="50" />
+        <button type="button" id="swyshot-savepath-save" class="swyshot-btn-primary" data-i18n="savePathSaveBtn"></button>
+        <button type="button" id="swyshot-savepath-cancel" class="swyshot-btn-plain" data-i18n="savePathCancelBtn"></button>
+      </div>
+
+      <div class="swyshot-setting-note" data-i18n="savePathNote"></div>
+    </div>
 
     <div class="swyshot-footer">
       <div class="swyshot-footer-brand" data-i18n="footerBrand"></div>
