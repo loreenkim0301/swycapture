@@ -166,6 +166,14 @@ async function blobToDataUrl(blob) {
 
 function saveAndOpen(dataUrl) {
   chrome.storage.local.set({ swyshotImage: dataUrl, swyshotCapturedAt: Date.now() }, () => {
+    // chrome.storage.local.set()은 실패해도(용량 초과 등) 콜백은 항상 호출되고
+    // chrome.runtime.lastError만 세팅된다. 이걸 확인하지 않으면 저장이 실패한 채로
+    // 새 탭을 열게 되어, 이전에 저장돼 있던 캡쳐 이미지가 그대로 다시 보이는
+    // "캡쳐했는데 옛날 화면만 나온다" 버그가 생긴다.
+    if (chrome.runtime.lastError) {
+      notifyError("errSaveImageFailed", chrome.runtime.lastError.message);
+      return;
+    }
     chrome.tabs.create({ url: chrome.runtime.getURL("annotator.html") });
     notifySuccess();
   });

@@ -45,6 +45,10 @@
     "message": "Capturing the visible area failed: $ERROR$",
     "placeholders": { "error": { "content": "$1" } }
   },
+  "errSaveImageFailed": {
+    "message": "Failed to save the captured image: $ERROR$",
+    "placeholders": { "error": { "content": "$1" } }
+  },
   "errRestrictedPage": {
     "message": "Pages like chrome://, the extensions manager, or the Chrome Web Store can't be captured due to browser policy. Please try again on a regular webpage."
   },
