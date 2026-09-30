@@ -26,8 +26,37 @@
   "ctxFullpage": { "message": "Capture full page (whole scroll)" },
   "ctxRegion": { "message": "Capture selected region" },
 
-  "errFullPageTooLarge": {
-    "message": "The page is too long (or too wide) to capture in full. (SwyCapture beta limitation)"
+  "fullPageLimitTitle": { "message": "This page is too long to fit in one image" },
+  "fullPageLimitBody": {
+    "message": "This page is about $A$ screens long. As an image (PNG) or PDF, only about $B$ screens can be saved at full quality. How would you like to capture it?",
+    "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" } }
+  },
+  "fullPageOptTop": {
+    "message": "Capture the first ~$A$ screens",
+    "placeholders": { "a": { "content": "$1" } }
+  },
+  "fullPageOptTopDesc": {
+    "message": "Full quality, from the top as far as possible (about $A$% of the page)",
+    "placeholders": { "a": { "content": "$1" } }
+  },
+  "fullPageOptCurrent": {
+    "message": "Capture ~$A$ screens from where you are",
+    "placeholders": { "a": { "content": "$1" } }
+  },
+  "fullPageOptCurrentDesc": { "message": "Full quality, starting at the current scroll position" },
+  "fullPageOptCancel": { "message": "Cancel" },
+  "fullPageRecommended": { "message": "Recommended" },
+  "notifySuccessPartial": {
+    "message": "Captured about $B$ of ~$A$ screens and opened it in a new tab.",
+    "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" } }
+  },
+  "notifyCompressedJpeg": {
+    "message": "The image was large (PNG ~$A$MB), so it was compressed as JPEG.",
+    "placeholders": { "a": { "content": "$1" } }
+  },
+  "errSaveImageTooLarge": {
+    "message": "The captured image (~$A$MB) was too large to save. Capture just the parts you need with 'Capture selected region'. (Reason: $B$)",
+    "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" } }
   },
   "errFullPageFailed": {
     "message": "Full page capture failed: $ERROR$",

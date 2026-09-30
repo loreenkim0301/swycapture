@@ -18,6 +18,7 @@
   document.querySelectorAll("[data-i18n-alt]").forEach((el) => {
     el.alt = t(el.dataset.i18nAlt);
   });
+  document.getElementById("swyshot-version").textContent = "v" + chrome.runtime.getManifest().version;
 
   const mainEl = document.getElementById("swyshot-main");
   const canvas = document.getElementById("swyshot-canvas");
