@@ -3,6 +3,8 @@ document.documentElement.lang = chrome.i18n.getUILanguage();
 document.querySelectorAll("[data-i18n]").forEach((el) => {
   el.textContent = chrome.i18n.getMessage(el.dataset.i18n);
 });
+// 어떤 버전이 설치돼 있는지 팝업에서 바로 확인할 수 있도록 manifest 버전을 표시한다.
+document.getElementById("swyshot-version").textContent = "v" + chrome.runtime.getManifest().version;
 
 document.querySelectorAll(".swyshot-menu-item").forEach((btn) => {
   btn.addEventListener("click", async () => {
