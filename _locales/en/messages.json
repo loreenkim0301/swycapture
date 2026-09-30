@@ -26,8 +26,54 @@
   "ctxFullpage": { "message": "Capture full page (whole scroll)" },
   "ctxRegion": { "message": "Capture selected region" },
 
-  "errFullPageTooLarge": {
-    "message": "The page is too long (or too wide) to capture in full. (SwyCapture beta limitation)"
+  "fullPageLimitTitle": { "message": "This page is too long to fit in one image" },
+  "fullPageLimitBody": {
+    "message": "This page is about $A$ screens long, which would make an image $B$px tall. A single image can be at most $C$, so at full quality only about $D$ screens fit. How would you like to capture it?",
+    "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" }, "c": { "content": "$3" }, "d": { "content": "$4" } }
+  },
+  "fullPageLimitReasonSide": {
+    "message": "$A$px tall",
+    "placeholders": { "a": { "content": "$1" } }
+  },
+  "fullPageLimitReasonArea": {
+    "message": "about $A$ × 10,000 pixels ($B$px tall at this page's width)",
+    "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" } }
+  },
+  "fullPageOptTop": {
+    "message": "Capture the first ~$A$ screens",
+    "placeholders": { "a": { "content": "$1" } }
+  },
+  "fullPageOptTopDesc": {
+    "message": "Full quality, from the top as far as possible (about $A$% of the page)",
+    "placeholders": { "a": { "content": "$1" } }
+  },
+  "fullPageOptCurrent": {
+    "message": "Capture ~$A$ screens from where you are",
+    "placeholders": { "a": { "content": "$1" } }
+  },
+  "fullPageOptCurrentDesc": { "message": "Full quality, starting at the current scroll position" },
+  "fullPageOptScaled": { "message": "Capture the whole page at lower resolution" },
+  "fullPageOptScaledDesc": {
+    "message": "Fits the entire page in one image, scaled to $A$% (text may get small)",
+    "placeholders": { "a": { "content": "$1" } }
+  },
+  "fullPageOptCancel": { "message": "Cancel" },
+  "fullPageRecommended": { "message": "Recommended" },
+  "notifySuccessPartial": {
+    "message": "Captured about $B$ of ~$A$ screens and opened it in a new tab.",
+    "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" } }
+  },
+  "notifySuccessScaled": {
+    "message": "Captured the whole page at $A$% size and opened it in a new tab.",
+    "placeholders": { "a": { "content": "$1" } }
+  },
+  "notifyCompressedJpeg": {
+    "message": "The image was large (PNG ~$A$MB), so it was compressed as JPEG.",
+    "placeholders": { "a": { "content": "$1" } }
+  },
+  "errSaveImageTooLarge": {
+    "message": "The captured image (~$A$MB) was too large to save. Try a shorter range or 'Capture the whole page at lower resolution'. (Reason: $B$)",
+    "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" } }
   },
   "errFullPageFailed": {
     "message": "Full page capture failed: $ERROR$",

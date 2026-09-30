@@ -26,8 +26,54 @@
   "ctxFullpage": { "message": "전체 페이지 캡쳐 (스크롤 전체)" },
   "ctxRegion": { "message": "영역 선택 캡쳐" },
 
-  "errFullPageTooLarge": {
-    "message": "페이지가 너무 길어서(또는 넓어서) 전체 캡쳐할 수 없습니다. (스위캡쳐 테스트 버전 제한)"
+  "fullPageLimitTitle": { "message": "페이지가 길어서 한 장에 다 담을 수 없어요" },
+  "fullPageLimitBody": {
+    "message": "이 페이지는 약 $A$화면 길이라, 전체를 캡쳐하면 세로 $B$px짜리 이미지가 됩니다. 이미지 한 장은 $C$까지만 만들 수 있어서, 원본 화질로는 약 $D$화면까지만 담을 수 있어요. 어떻게 캡쳐할까요?",
+    "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" }, "c": { "content": "$3" }, "d": { "content": "$4" } }
+  },
+  "fullPageLimitReasonSide": {
+    "message": "세로 최대 $A$px",
+    "placeholders": { "a": { "content": "$1" } }
+  },
+  "fullPageLimitReasonArea": {
+    "message": "최대 약 $A$만 화소(이 페이지 폭 기준 세로 $B$px)",
+    "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" } }
+  },
+  "fullPageOptTop": {
+    "message": "처음부터 약 $A$화면까지 캡쳐",
+    "placeholders": { "a": { "content": "$1" } }
+  },
+  "fullPageOptTopDesc": {
+    "message": "원본 화질 그대로, 맨 위부터 최대 길이만큼 (페이지의 약 $A$%)",
+    "placeholders": { "a": { "content": "$1" } }
+  },
+  "fullPageOptCurrent": {
+    "message": "지금 보는 위치부터 약 $A$화면까지 캡쳐",
+    "placeholders": { "a": { "content": "$1" } }
+  },
+  "fullPageOptCurrentDesc": { "message": "원본 화질 그대로, 현재 스크롤 위치부터 최대 길이만큼" },
+  "fullPageOptScaled": { "message": "화질을 낮춰 페이지 전체 캡쳐" },
+  "fullPageOptScaledDesc": {
+    "message": "페이지 전체를 한 장에 담는 대신 원본의 $A$% 크기로 줄여요 (글씨가 작아질 수 있어요)",
+    "placeholders": { "a": { "content": "$1" } }
+  },
+  "fullPageOptCancel": { "message": "취소" },
+  "fullPageRecommended": { "message": "추천" },
+  "notifySuccessPartial": {
+    "message": "전체 약 $A$화면 중 약 $B$화면을 캡쳐해 새 탭에서 열었습니다.",
+    "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" } }
+  },
+  "notifySuccessScaled": {
+    "message": "페이지 전체를 원본의 $A$% 크기로 캡쳐해 새 탭에서 열었습니다.",
+    "placeholders": { "a": { "content": "$1" } }
+  },
+  "notifyCompressedJpeg": {
+    "message": "이미지 용량이 커서(PNG 약 $A$MB) JPEG로 압축했습니다.",
+    "placeholders": { "a": { "content": "$1" } }
+  },
+  "errSaveImageTooLarge": {
+    "message": "캡쳐 이미지(약 $A$MB)가 너무 커서 저장하지 못했습니다. 전체 페이지 캡쳐에서 범위를 줄이거나 '화질을 낮춰 페이지 전체 캡쳐'로 다시 시도해주세요. (원인: $B$)",
+    "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" } }
   },
   "errFullPageFailed": {
     "message": "전체 페이지 캡쳐에 실패했습니다: $ERROR$",
