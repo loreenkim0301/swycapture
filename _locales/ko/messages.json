@@ -44,27 +44,18 @@
     "placeholders": { "a": { "content": "$1" } }
   },
   "fullPageOptCurrentDesc": { "message": "원본 화질 그대로, 현재 스크롤 위치부터 최대 길이만큼" },
-  "fullPageOptScaled": { "message": "화질을 낮춰 페이지 전체 캡쳐" },
-  "fullPageOptScaledDesc": {
-    "message": "페이지 전체를 한 장에 담는 대신 원본의 $A$% 크기로 줄여요 (글씨가 작아질 수 있어요)",
-    "placeholders": { "a": { "content": "$1" } }
-  },
   "fullPageOptCancel": { "message": "취소" },
   "fullPageRecommended": { "message": "추천" },
   "notifySuccessPartial": {
     "message": "전체 약 $A$화면 중 약 $B$화면을 캡쳐해 새 탭에서 열었습니다.",
     "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" } }
   },
-  "notifySuccessScaled": {
-    "message": "페이지 전체를 원본의 $A$% 크기로 캡쳐해 새 탭에서 열었습니다.",
-    "placeholders": { "a": { "content": "$1" } }
-  },
   "notifyCompressedJpeg": {
     "message": "이미지 용량이 커서(PNG 약 $A$MB) JPEG로 압축했습니다.",
     "placeholders": { "a": { "content": "$1" } }
   },
   "errSaveImageTooLarge": {
-    "message": "캡쳐 이미지(약 $A$MB)가 너무 커서 저장하지 못했습니다. 전체 페이지 캡쳐에서 범위를 줄이거나 '화질을 낮춰 페이지 전체 캡쳐'로 다시 시도해주세요. (원인: $B$)",
+    "message": "캡쳐 이미지(약 $A$MB)가 너무 커서 저장하지 못했습니다. 필요한 부분만 '영역 선택 캡쳐'로 나눠서 캡쳐해주세요. (원인: $B$)",
     "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" } }
   },
   "errFullPageFailed": {

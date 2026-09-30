@@ -44,27 +44,18 @@
     "placeholders": { "a": { "content": "$1" } }
   },
   "fullPageOptCurrentDesc": { "message": "Full quality, starting at the current scroll position" },
-  "fullPageOptScaled": { "message": "Capture the whole page at lower resolution" },
-  "fullPageOptScaledDesc": {
-    "message": "Fits the entire page in one image, scaled to $A$% (text may get small)",
-    "placeholders": { "a": { "content": "$1" } }
-  },
   "fullPageOptCancel": { "message": "Cancel" },
   "fullPageRecommended": { "message": "Recommended" },
   "notifySuccessPartial": {
     "message": "Captured about $B$ of ~$A$ screens and opened it in a new tab.",
     "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" } }
   },
-  "notifySuccessScaled": {
-    "message": "Captured the whole page at $A$% size and opened it in a new tab.",
-    "placeholders": { "a": { "content": "$1" } }
-  },
   "notifyCompressedJpeg": {
     "message": "The image was large (PNG ~$A$MB), so it was compressed as JPEG.",
     "placeholders": { "a": { "content": "$1" } }
   },
   "errSaveImageTooLarge": {
-    "message": "The captured image (~$A$MB) was too large to save. Try a shorter range or 'Capture the whole page at lower resolution'. (Reason: $B$)",
+    "message": "The captured image (~$A$MB) was too large to save. Capture just the parts you need with 'Capture selected region'. (Reason: $B$)",
     "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" } }
   },
   "errFullPageFailed": {

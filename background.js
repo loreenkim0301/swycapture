@@ -58,7 +58,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === "swyshot-fullpage-choice") {
     console.log("[SwyCapture] 메시지 수신: swyshot-fullpage-choice", msg);
     const tab = sender.tab;
-    if (tab && ["top", "current", "scaled"].includes(msg.choice)) {
+    if (tab && ["top", "current"].includes(msg.choice)) {
       // 대화상자가 페이지에서 사라진 뒤 리페인트될 시간을 주고 시작한다(대화상자가 찍히지 않도록).
       delay(100).then(() => captureFullPage(tab.id, tab.windowId, msg.choice));
     }
@@ -371,11 +371,8 @@ const MAX_CANVAS_SIDE = 32000;
 const MAX_CANVAS_AREA = 120000000;
 // PNG가 이보다 크면 chrome.storage 저장/주석 편집기 로딩이 실패하거나 매우 느려지므로 JPEG로 압축한다.
 const MAX_PNG_BYTES = 40 * 1024 * 1024;
-// 화질을 낮춰 전체를 담는 대안은, 결과가 일반(1배율) 화면 기준 절반 크기 이상일 때만 제안한다.
-// 그보다 작으면 글씨를 읽을 수 없어 대안으로서 의미가 없다.
-const MIN_READABLE_CSS_SCALE = 0.5;
 
-// 페이지 크기로부터 "원본 화질로 한 장에 담을 수 있는 최대 길이"와 "전체를 담으려면 줄여야 하는 비율"을 계산한다.
+// 페이지 크기로부터 "원본 화질로 한 장에 담을 수 있는 최대 길이"를 계산한다.
 // 예전에는 한도를 넘으면 무조건 "너무 길어서 안 된다"로 끝났는데, 이 값들로 대안을 제시한다.
 function planFullPage(metrics) {
   const dpr = metrics.devicePixelRatio;
@@ -384,17 +381,13 @@ function planFullPage(metrics) {
   const fullHeightPx = Math.max(1, Math.round(metrics.scrollHeight * dpr));
   const maxHeightByArea = Math.floor(MAX_CANVAS_AREA / widthPx);
   const maxHeightPx = Math.min(MAX_CANVAS_SIDE, maxHeightByArea);
-  const fitScale =
-    Math.min(1, MAX_CANVAS_SIDE / fullHeightPx, Math.sqrt(MAX_CANVAS_AREA / (widthPx * fullHeightPx))) * 0.999;
   return {
     dpr,
     widthPx,
     fullHeightPx,
     maxHeightPx,
     maxCssHeight: Math.floor(maxHeightPx / dpr),
-    fits: fullHeightPx <= maxHeightPx,
-    fitScale,
-    canScale: fitScale * dpr >= MIN_READABLE_CSS_SCALE
+    fits: fullHeightPx <= maxHeightPx
   };
 }
 
@@ -513,7 +506,6 @@ async function askFullPageOption(tabId, metrics, plan) {
   const vh = metrics.viewportHeight;
   const totalScreens = screensOf(metrics.scrollHeight, vh);
   const maxScreens = screensOf(plan.maxCssHeight, vh);
-  const scalePct = Math.floor(plan.fitScale * 100);
   const options = [];
   options.push({
     id: "top",
@@ -523,12 +515,8 @@ async function askFullPageOption(tabId, metrics, plan) {
   if (currentStartY(metrics, plan) > vh / 2) {
     options.push({ id: "current", title: t("fullPageOptCurrent", maxScreens), desc: t("fullPageOptCurrentDesc") });
   }
-  if (plan.canScale) {
-    options.push({ id: "scaled", title: t("fullPageOptScaled"), desc: t("fullPageOptScaledDesc", scalePct) });
-  }
-  // 페이지 전체를 읽을 수 있는 화질로 담을 수 있으면 그게 가장 기대에 가깝다. 아니면 맨 위부터 최대 길이.
-  const recommendedId = plan.canScale ? "scaled" : "top";
-  options.forEach((o) => (o.recommended = o.id === recommendedId));
+  // 화질을 낮춰 전체를 담는 선택지는 두지 않는다(결과물이 애매함). 원본 화질을 유지하고 범위만 고르게 한다.
+  options[0].recommended = true;
 
   const texts = {
     title: t("fullPageLimitTitle"),
@@ -556,7 +544,6 @@ async function captureFullPage(tabId, windowId, choice) {
 
     let startY = 0;
     let rangeCss = metrics.scrollHeight;
-    let scale = 1;
     let successMessage = null;
     const totalScreens = screensOf(metrics.scrollHeight, metrics.viewportHeight);
 
@@ -565,17 +552,12 @@ async function captureFullPage(tabId, windowId, choice) {
         await askFullPageOption(tabId, { ...metrics, windowId }, plan);
         return;
       }
-      if (choice === "scaled" && plan.canScale) {
-        scale = plan.fitScale;
-        successMessage = chrome.i18n.getMessage("notifySuccessScaled", [String(Math.floor(scale * 100))]);
-      } else {
-        rangeCss = plan.maxCssHeight;
-        if (choice === "current") startY = currentStartY(metrics, plan);
-        successMessage = chrome.i18n.getMessage("notifySuccessPartial", [
-          String(totalScreens),
-          String(screensOf(rangeCss, metrics.viewportHeight))
-        ]);
-      }
+      rangeCss = plan.maxCssHeight;
+      if (choice === "current") startY = currentStartY(metrics, plan);
+      successMessage = chrome.i18n.getMessage("notifySuccessPartial", [
+        String(totalScreens),
+        String(screensOf(rangeCss, metrics.viewportHeight))
+      ]);
     }
 
     const vh = metrics.viewportHeight;
@@ -586,11 +568,10 @@ async function captureFullPage(tabId, windowId, choice) {
     for (let y = startY; y < lastPos; y += vh) positions.push(Math.min(y, maxScroll));
     positions.push(lastPos);
 
-    const canvasW = Math.max(1, Math.round(plan.widthPx * scale));
-    const canvasH = Math.max(1, Math.round(rangeCss * dpr * scale));
+    const canvasW = plan.widthPx;
+    const canvasH = Math.max(1, Math.round(rangeCss * dpr));
     const offscreen = new OffscreenCanvas(canvasW, canvasH);
     const ctx = offscreen.getContext("2d");
-    if (scale < 1) ctx.imageSmoothingQuality = "high";
 
     await execInTab(tabId, hideFixedElements);
     try {
@@ -604,13 +585,7 @@ async function captureFullPage(tabId, windowId, choice) {
         const dataUrl = await captureVisibleTabSafe(windowId);
         const blob = await (await fetch(dataUrl)).blob();
         const bitmap = await createImageBitmap(blob);
-        ctx.drawImage(
-          bitmap,
-          0,
-          Math.round((actualY - startY) * dpr * scale),
-          Math.round(bitmap.width * scale),
-          Math.round(bitmap.height * scale)
-        );
+        ctx.drawImage(bitmap, 0, Math.round((actualY - startY) * dpr));
         bitmap.close();
       }
     } finally {
