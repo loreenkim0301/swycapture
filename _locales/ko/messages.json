@@ -28,15 +28,7 @@
 
   "fullPageLimitTitle": { "message": "페이지가 길어서 한 장에 다 담을 수 없어요" },
   "fullPageLimitBody": {
-    "message": "이 페이지는 약 $A$화면 길이라, 전체를 캡쳐하면 세로 $B$px짜리 이미지가 됩니다. 이미지 한 장은 $C$까지만 만들 수 있어서, 원본 화질로는 약 $D$화면까지만 담을 수 있어요. 어떻게 캡쳐할까요?",
-    "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" }, "c": { "content": "$3" }, "d": { "content": "$4" } }
-  },
-  "fullPageLimitReasonSide": {
-    "message": "세로 최대 $A$px",
-    "placeholders": { "a": { "content": "$1" } }
-  },
-  "fullPageLimitReasonArea": {
-    "message": "최대 약 $A$만 화소(이 페이지 폭 기준 세로 $B$px)",
+    "message": "이 페이지는 약 $A$화면 길이에요. 이미지(PNG)·PDF로는 원본 화질 기준 약 $B$화면까지만 저장이 가능합니다. 어떻게 캡쳐할까요?",
     "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" } }
   },
   "fullPageOptTop": {

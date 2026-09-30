@@ -28,15 +28,7 @@
 
   "fullPageLimitTitle": { "message": "This page is too long to fit in one image" },
   "fullPageLimitBody": {
-    "message": "This page is about $A$ screens long, which would make an image $B$px tall. A single image can be at most $C$, so at full quality only about $D$ screens fit. How would you like to capture it?",
-    "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" }, "c": { "content": "$3" }, "d": { "content": "$4" } }
-  },
-  "fullPageLimitReasonSide": {
-    "message": "$A$px tall",
-    "placeholders": { "a": { "content": "$1" } }
-  },
-  "fullPageLimitReasonArea": {
-    "message": "about $A$ × 10,000 pixels ($B$px tall at this page's width)",
+    "message": "This page is about $A$ screens long. As an image (PNG) or PDF, only about $B$ screens can be saved at full quality. How would you like to capture it?",
     "placeholders": { "a": { "content": "$1" }, "b": { "content": "$2" } }
   },
   "fullPageOptTop": {

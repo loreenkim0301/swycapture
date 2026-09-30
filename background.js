@@ -392,7 +392,6 @@ function planFullPage(metrics) {
     fullHeightPx,
     maxHeightPx,
     maxCssHeight: Math.floor(maxHeightPx / dpr),
-    limitedBy: maxHeightByArea < MAX_CANVAS_SIDE ? "area" : "side",
     fits: fullHeightPx <= maxHeightPx,
     fitScale,
     canScale: fitScale * dpr >= MIN_READABLE_CSS_SCALE
@@ -401,10 +400,6 @@ function planFullPage(metrics) {
 
 function clamp(v, min, max) {
   return Math.max(min, Math.min(v, max));
-}
-
-function formatNumber(n) {
-  return Math.round(n).toLocaleString(chrome.i18n.getUILanguage());
 }
 
 function screensOf(cssHeight, viewportHeight) {
@@ -518,11 +513,6 @@ async function askFullPageOption(tabId, metrics, plan) {
   const vh = metrics.viewportHeight;
   const totalScreens = screensOf(metrics.scrollHeight, vh);
   const maxScreens = screensOf(plan.maxCssHeight, vh);
-  const reason =
-    plan.limitedBy === "area"
-      ? t("fullPageLimitReasonArea", formatNumber(MAX_CANVAS_AREA / 10000), formatNumber(plan.maxHeightPx))
-      : t("fullPageLimitReasonSide", formatNumber(MAX_CANVAS_SIDE));
-
   const scalePct = Math.floor(plan.fitScale * 100);
   const options = [];
   options.push({
@@ -542,13 +532,7 @@ async function askFullPageOption(tabId, metrics, plan) {
 
   const texts = {
     title: t("fullPageLimitTitle"),
-    body: t(
-      "fullPageLimitBody",
-      totalScreens,
-      formatNumber(plan.fullHeightPx),
-      reason,
-      maxScreens
-    ),
+    body: t("fullPageLimitBody", totalScreens, maxScreens),
     recommended: t("fullPageRecommended"),
     cancel: t("fullPageOptCancel")
   };
