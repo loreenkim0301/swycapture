@@ -6,7 +6,7 @@
 2. 툴바 아이콘 팝업 제목 오른쪽에 **v1.1.3** 이 보이면 새 버전 로드 완료
 
 ## 테스트 페이지
-- 긴 페이지(약 60화면, 세로 약 54,000px): https://raw.githack.com/loreenkim0301/swycapture/claude/long-screen-capture-fix-0465eb/docs/test-pages/long-page-test.html
+- 긴 페이지(약 60화면, 세로 약 59,000px): https://htmlpreview.github.io/?https://github.com/loreenkim0301/swycapture/blob/claude/long-screen-capture-fix-0465eb/docs/test-pages/long-page-test.html
 - 원본 파일: [docs/test-pages/long-page-test.html](../test-pages/long-page-test.html)
 
 ## 확인 항목
